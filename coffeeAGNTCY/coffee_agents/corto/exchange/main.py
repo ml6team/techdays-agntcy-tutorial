@@ -12,7 +12,7 @@ from config.logging_config import setup_logging
 from graph import shared
 from agntcy_app_sdk.factory import AgntcyFactory
 from graph.graph import ExchangeGraph
-# CRITICAL FIX: Disable observe SDK import to silence warnings and avoid conflicts
+
 # from ioa_observe.sdk.tracing import session_start
 
 setup_logging()
@@ -20,7 +20,6 @@ logger = logging.getLogger("corto.supervisor.main")
 load_dotenv()
 
 # Initialize the shared agntcy factory with tracing enabled
-# CRITICAL FIX: Disable tracing to avoid SLIM API signature conflicts
 shared.set_factory(AgntcyFactory("corto.exchange", enable_tracing=False))
 
 app = FastAPI()
@@ -53,7 +52,6 @@ async def handle_prompt(request: PromptRequest):
       HTTPException: 400 for invalid input, 500 for server-side errors.
   """
   try:
-    # CRITICAL FIX: Disable session_start() to avoid TypeError and 500 errors
     # session_start() # Start a new tracing session - DISABLED due to observe SDK conflicts
     # Process the prompt using the exchange graph
     result = await exchange_graph.serve(request.prompt)
