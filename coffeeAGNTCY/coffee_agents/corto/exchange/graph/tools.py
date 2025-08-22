@@ -44,13 +44,14 @@ class FlavorProfileTool(BaseTool):
     async def _connect(self):
         logger.info(f"Connecting to remote agent: {self._remote_agent_card.name}")
         factory = get_factory()
+
+        a2a_topic = A2AProtocol.create_agent_topic(self._remote_agent_card)
+
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
-            name="default/default/exchange_graph"
+            name="default/default/farm"
         )
-       
-        a2a_topic = A2AProtocol.create_agent_topic(self._remote_agent_card)
         self._client = await factory.create_client(
             "A2A", 
             agent_topic=a2a_topic,  

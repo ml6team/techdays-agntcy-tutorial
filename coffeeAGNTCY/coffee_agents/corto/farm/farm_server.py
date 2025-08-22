@@ -9,7 +9,7 @@ from a2a.server.tasks import InMemoryTaskStore
 from a2a.server.request_handlers import DefaultRequestHandler
 from agntcy_app_sdk.factory import AgntcyFactory
 from dotenv import load_dotenv
-
+from agntcy_app_sdk.protocols.a2a.protocol import A2AProtocol
 from agent_executor import FarmAgentExecutor
 from card import AGENT_CARD
 from config.config import FARM_AGENT_HOST, FARM_AGENT_PORT
@@ -66,7 +66,7 @@ async def main():
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
-            name="default/default/farm_graph"
+            name="default/default/farm"
         )
         bridge = factory.create_bridge(server, transport=transport)
         await bridge.start(blocking=True)
