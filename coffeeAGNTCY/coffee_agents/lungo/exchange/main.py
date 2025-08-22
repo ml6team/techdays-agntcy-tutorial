@@ -20,7 +20,7 @@ logger = logging.getLogger("lungo.supervisor.main")
 load_dotenv()
 
 # Initialize the shared agntcy factory with tracing enabled
-shared.set_factory(AgntcyFactory("lungo.exchange", enable_tracing=True))
+shared.set_factory(AgntcyFactory("lungo.exchange", enable_tracing=False))
 
 app = FastAPI()
 # Add CORS middleware
@@ -52,7 +52,7 @@ async def handle_prompt(request: PromptRequest):
       HTTPException: 400 for invalid input, 500 for server-side errors.
   """
   try:
-    session_start() # Start a new tracing session
+    # session_start() # Start a new tracing session
     # Process the prompt using the exchange graph
     result = await exchange_graph.serve(request.prompt)
     logger.info(f"Final result from LangGraph: {result}")

@@ -15,7 +15,7 @@ from config.config import (
 )
 
 # Initialize a multi-protocol, multi-transport agntcy factory.
-factory = AgntcyFactory("lungo_mcp_server", enable_tracing=True)
+factory = AgntcyFactory("lungo_mcp_server", enable_tracing=False)
 transport = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT)
 
 # Base URLs

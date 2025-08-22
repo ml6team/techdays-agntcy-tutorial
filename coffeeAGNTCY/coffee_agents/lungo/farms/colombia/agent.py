@@ -32,7 +32,7 @@ from config.config import (
 logger = logging.getLogger("lungo.colombia_farm_agent.agent")
 
 # Initialize a multi-protocol, multi-transport agntcy factory.
-factory = AgntcyFactory("lungo_colombia_farm", enable_tracing=True)
+factory = AgntcyFactory("lungo_colombia_farm", enable_tracing=False)
 
 # --- 1. Define Node Names as Constants ---
 class NodeStates:
@@ -50,7 +50,7 @@ class GraphState(MessagesState):
     next_node: str
 
 # --- 3. Implement the LangGraph Application Class ---
-@agent(name="colombia_farm_agent")
+# @agent(name="colombia_farm_agent")
 class FarmAgent:
     def __init__(self):
         """
@@ -244,7 +244,7 @@ class FarmAgent:
 
     # --- Graph Building Method ---
 
-    @graph(name="colombia_farm_graph")
+    # @graph(name="colombia_farm_graph")
     def _build_graph(self):
         """
         Builds and compiles the LangGraph workflow.
