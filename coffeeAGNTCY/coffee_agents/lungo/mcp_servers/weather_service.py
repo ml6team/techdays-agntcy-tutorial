@@ -16,7 +16,7 @@ from config.config import (
 
 # Initialize a multi-protocol, multi-transport agntcy factory.
 factory = AgntcyFactory("lungo_mcp_server", enable_tracing=False)
-transport = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT)
+transport = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT, name="default/default/weather_service")
 
 # Base URLs
 NOMINATIM_BASE = "https://nominatim.openstreetmap.org/search"

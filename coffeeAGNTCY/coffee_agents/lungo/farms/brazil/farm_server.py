@@ -38,7 +38,7 @@ async def run_http_server(server):
 async def run_transport(server, transport_type, endpoint, block):
     """Run the transport and broadcast bridge."""
     try:
-        transport = factory.create_transport(transport_type, endpoint=endpoint)
+        transport = factory.create_transport(transport_type, endpoint=endpoint, name="default/default/brazil_farm")
 
         # Create a broadcast bridge to the farm yield topic
         broadcast_bridge = factory.create_bridge(

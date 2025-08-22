@@ -159,6 +159,7 @@ async def get_farm_yield_inventory(prompt: str, farm: str) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
     
     client = await factory.create_client(
@@ -211,6 +212,7 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
 
     client = await factory.create_client(
@@ -294,6 +296,7 @@ async def create_order(farm: str, quantity: int, price: float) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
 
     client = await factory.create_client(
@@ -348,6 +351,7 @@ async def get_order_details(order_id: str) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
     
     client = await factory.create_client(
