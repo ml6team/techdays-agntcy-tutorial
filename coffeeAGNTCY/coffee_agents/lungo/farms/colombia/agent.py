@@ -121,7 +121,7 @@ class FarmAgent:
 
         logger.info(f"Weather location extracted: {location}")
 
-        transport_instance = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT, name="default/default/weather_service")
+        transport_instance = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT, name="default/default/colombia_farm")
         mcp_client = factory.create_client(
             "MCP",
             agent_topic="lungo_weather_service",

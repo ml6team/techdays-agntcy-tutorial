@@ -66,6 +66,7 @@ async def main():
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
+            name="default/default/farm_graph"
         )
         bridge = factory.create_bridge(server, transport=transport)
         await bridge.start(blocking=True)

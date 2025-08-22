@@ -47,6 +47,7 @@ class FlavorProfileTool(BaseTool):
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
+            name="default/default/exchange_graph"
         )
        
         a2a_topic = A2AProtocol.create_agent_topic(self._remote_agent_card)
