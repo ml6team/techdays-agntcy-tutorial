@@ -50,11 +50,11 @@ class FlavorProfileTool(BaseTool):
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
-            name="default/default/farm"
+            name="default/default/exchange"
         )
         self._client = await factory.create_client(
             "A2A", 
-            agent_topic="default/default/farm",
+            agent_topic=a2a_topic,
             agent_url=self._remote_agent_card.url, 
             transport=transport)
         

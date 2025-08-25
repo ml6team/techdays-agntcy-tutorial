@@ -66,7 +66,7 @@ async def main():
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
-            name="default/default/farm"
+            name= "default/default/" + A2AProtocol.create_agent_topic(AGENT_CARD)
         )
         bridge = factory.create_bridge(server, transport=transport)
         await bridge.start(blocking=True)
