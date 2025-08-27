@@ -12,10 +12,7 @@ from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 from langgraph.graph import StateGraph, END
 from langgraph.prebuilt import ToolNode
-from ioa_observe.sdk import Observe
 from ioa_observe.sdk.decorators import agent, tool, graph
-from ioa_observe.sdk.tracing import session_start
-
 
 from common.llm import get_llm
 from graph.tools import (
@@ -46,12 +43,12 @@ class GraphState(MessagesState):
     """
     next_node: str
 
-# @agent(name="exchange_agent")
+@agent(name="exchange_agent")
 class ExchangeGraph:
     def __init__(self):
         self.graph = self.build_graph()
 
-    # @graph(name="exchange_graph")
+    @graph(name="exchange_graph")
     def build_graph(self) -> CompiledStateGraph:
         """
         Constructs and compiles a LangGraph instance.

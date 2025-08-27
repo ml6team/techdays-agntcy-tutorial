@@ -32,7 +32,7 @@ from config.config import (
 logger = logging.getLogger("lungo.colombia_farm_agent.agent")
 
 # Initialize a multi-protocol, multi-transport agntcy factory.
-factory = AgntcyFactory("lungo_colombia_farm", enable_tracing=False)
+factory = AgntcyFactory("lungo_colombia_farm", enable_tracing=True)
 
 # --- 1. Define Node Names as Constants ---
 class NodeStates:
@@ -121,7 +121,12 @@ class FarmAgent:
 
         logger.info(f"Weather location extracted: {location}")
 
-        transport_instance = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT, name="default/default/colombia_farm")
+        #return {"messages": [AIMessage(f"The weather forecast for {location} is: sunny and 75°F.")]}
+
+        transport_instance = factory.create_transport(
+            DEFAULT_MESSAGE_TRANSPORT, 
+            endpoint=TRANSPORT_SERVER_ENDPOINT, 
+            name="default/default/mcp_client")
         mcp_client = factory.create_client(
             "MCP",
             agent_topic="lungo_weather_service",

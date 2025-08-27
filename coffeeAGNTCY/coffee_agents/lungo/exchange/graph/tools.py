@@ -134,7 +134,7 @@ def verify_farm_identity(identity_service: IdentityService, farm_name: str):
         raise ValueError(f"Identity verification failed.")
 
 @tool(args_schema=InventoryArgs)
-# @ioa_tool_decorator(name="get_farm_yield_inventory")
+@ioa_tool_decorator(name="get_farm_yield_inventory")
 async def get_farm_yield_inventory(prompt: str, farm: str) -> str:
     """
     Fetch yield inventory from a specific farm.
@@ -194,7 +194,7 @@ async def get_farm_yield_inventory(prompt: str, farm: str) -> str:
 
 
 @tool
-# @ioa_tool_decorator(name="get_all_farms_yield_inventory")
+@ioa_tool_decorator(name="get_all_farms_yield_inventory")
 async def get_all_farms_yield_inventory(prompt: str) -> str:
     """
     Broadcasts a prompt to all farms and aggregates their inventory responses.
@@ -215,12 +215,6 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
         name="default/default/exchange_graph"
     )
 
-    client = await factory.create_client(
-        "A2A",
-        agent_topic=FARM_BROADCAST_TOPIC,
-        transport=transport,
-    )
-
     request = SendMessageRequest(
         id=str(uuid4()),
         params=MessageSendParams(
@@ -232,7 +226,45 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
         )
     )
 
+    """
+    Previous version:
+    --------------------------------------------------------------------
+
+    client = await factory.create_client(
+        "A2A",
+        agent_topic=FARM_BROADCAST_TOPIC,
+        transport=transport,
+    )
+
     responses = await client.broadcast_message(request, expected_responses=3)
+
+    """
+
+    """
+    New version:
+    -------------------------------------------------------------------
+    """
+
+    if DEFAULT_MESSAGE_TRANSPORT == "SLIM":
+        client_handshake_topic = A2AProtocol.create_agent_topic(get_farm_card("brazil"))
+    else:
+        # using NATS
+        client_handshake_topic = FARM_BROADCAST_TOPIC
+
+    client = await factory.create_client(
+        "A2A",
+        agent_topic=client_handshake_topic,
+        transport=transport,
+    )
+
+    recipients = [A2AProtocol.create_agent_topic(get_farm_card(farm)) for farm in ['brazil', 'colombia', 'vietnam']]
+
+    responses = await client.broadcast_message(request, broadcast_topic=FARM_BROADCAST_TOPIC, recipients=recipients)
+
+
+    """
+    -------------------------------------------------------------------
+    """
 
     logger.info(f"got {len(responses)} responses back from farms")
 
@@ -257,7 +289,7 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
 
 
 @tool(args_schema=CreateOrderArgs)
-# @ioa_tool_decorator(name="create_order")
+@ioa_tool_decorator(name="create_order")
 async def create_order(farm: str, quantity: int, price: float) -> str:
     """
     Sends a request to create a coffee order with a specific farm.
@@ -331,7 +363,7 @@ async def create_order(farm: str, quantity: int, price: float) -> str:
     
 
 @tool
-# @ioa_tool_decorator(name="get_order_details")
+@ioa_tool_decorator(name="get_order_details")
 async def get_order_details(order_id: str) -> str:
     """
     Get details of an order.
