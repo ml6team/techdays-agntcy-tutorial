@@ -226,45 +226,23 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
         )
     )
 
-    """
-    Previous version:
-    --------------------------------------------------------------------
-
-    client = await factory.create_client(
-        "A2A",
-        agent_topic=FARM_BROADCAST_TOPIC,
-        transport=transport,
-    )
-
-    responses = await client.broadcast_message(request, expected_responses=3)
-
-    """
-
-    """
-    New version:
-    -------------------------------------------------------------------
-    """
-
     if DEFAULT_MESSAGE_TRANSPORT == "SLIM":
         client_handshake_topic = A2AProtocol.create_agent_topic(get_farm_card("brazil"))
     else:
-        # using NATS
+        # using NATS 
         client_handshake_topic = FARM_BROADCAST_TOPIC
 
+    # create an A2A client, retrieving an A2A card from agent_topic
     client = await factory.create_client(
         "A2A",
         agent_topic=client_handshake_topic,
         transport=transport,
     )
 
+    # create a list of recipients to include in the broadcast
     recipients = [A2AProtocol.create_agent_topic(get_farm_card(farm)) for farm in ['brazil', 'colombia', 'vietnam']]
-
+    # create a broadcast message and collect responses
     responses = await client.broadcast_message(request, broadcast_topic=FARM_BROADCAST_TOPIC, recipients=recipients)
-
-
-    """
-    -------------------------------------------------------------------
-    """
 
     logger.info(f"got {len(responses)} responses back from farms")
 
