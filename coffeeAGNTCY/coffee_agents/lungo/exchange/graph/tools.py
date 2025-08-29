@@ -161,6 +161,7 @@ async def get_farm_yield_inventory(prompt: str, farm: str) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
     
     client = await factory.create_client(
@@ -213,12 +214,7 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
-    )
-
-    client = await factory.create_client(
-        "A2A",
-        agent_topic=FARM_BROADCAST_TOPIC,
-        transport=transport,
+        name="default/default/exchange_graph"
     )
 
     request = SendMessageRequest(
@@ -232,7 +228,23 @@ async def get_all_farms_yield_inventory(prompt: str) -> str:
         )
     )
 
-    responses = await client.broadcast_message(request, expected_responses=3)
+    if DEFAULT_MESSAGE_TRANSPORT == "SLIM":
+        client_handshake_topic = A2AProtocol.create_agent_topic(get_farm_card("brazil"))
+    else:
+        # using NATS 
+        client_handshake_topic = FARM_BROADCAST_TOPIC
+
+    # create an A2A client, retrieving an A2A card from agent_topic
+    client = await factory.create_client(
+        "A2A",
+        agent_topic=client_handshake_topic,
+        transport=transport,
+    )
+
+    # create a list of recipients to include in the broadcast
+    recipients = [A2AProtocol.create_agent_topic(get_farm_card(farm)) for farm in ['brazil', 'colombia', 'vietnam']]
+    # create a broadcast message and collect responses
+    responses = await client.broadcast_message(request, broadcast_topic=FARM_BROADCAST_TOPIC, recipients=recipients)
 
     logger.info(f"got {len(responses)} responses back from farms")
 
@@ -296,6 +308,7 @@ async def create_order(farm: str, quantity: int, price: float) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
 
     client = await factory.create_client(
@@ -350,6 +363,7 @@ async def get_order_details(order_id: str) -> str:
     transport = factory.create_transport(
         DEFAULT_MESSAGE_TRANSPORT,
         endpoint=TRANSPORT_SERVER_ENDPOINT,
+        name="default/default/exchange_graph"
     )
     
     client = await factory.create_client(
