@@ -18,7 +18,7 @@ from config.config import DEFAULT_MESSAGE_TRANSPORT, TRANSPORT_SERVER_ENDPOINT
 load_dotenv()
 
 # Initialize a multi-protocol, multi-transport gateway factory.
-factory = AgntcyFactory("corto.farm_agent", enable_tracing=False)
+factory = AgntcyFactory("corto.farm_agent", enable_tracing=True)
 
 async def main():
     """
@@ -66,6 +66,7 @@ async def main():
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
+            # SLIM transport requires a routable name (org/namespace/agent) to build the PyName used for request-reply routing to match the a2a client topic
             name= "default/default/" + A2AProtocol.create_agent_topic(AGENT_CARD)
         )
         bridge = factory.create_bridge(server, transport=transport)

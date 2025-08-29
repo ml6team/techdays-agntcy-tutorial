@@ -165,7 +165,7 @@ Additionally run the observability stack that has OTEL Collector, Grafana and Cl
 You can do this by executing the following command:
 
 ```sh
-docker compose up slim clickhouse-server otel-collector grafana
+docker-compose up slim nats clickhouse-server otel-collector grafana
 ```
 
 **Step 2: Run the Weather MCP Server**

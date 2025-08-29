@@ -50,6 +50,7 @@ class FlavorProfileTool(BaseTool):
         transport = factory.create_transport(
             DEFAULT_MESSAGE_TRANSPORT,
             endpoint=TRANSPORT_SERVER_ENDPOINT,
+            # SLIM transport requires a routable name (org/namespace/agent) to build the PyName used for request-reply routing
             name="default/default/exchange"
         )
         self._client = await factory.create_client(
@@ -75,7 +76,7 @@ class FlavorProfileTool(BaseTool):
             logger.error(f"Failed to get flavor profile: {str(e)}")
             raise RuntimeError(f"Failed to get flavor profile: {str(e)}")
     
-    # @tool(name="exchange_tool")
+    @tool(name="exchange_tool")
     async def send_message(self, prompt: str) -> str:
         """
         Sends a message to the flavor profile farm agent via A2A, specifically invoking its `estimate_flavor` skill.
