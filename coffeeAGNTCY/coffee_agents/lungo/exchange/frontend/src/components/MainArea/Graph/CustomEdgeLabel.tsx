@@ -22,7 +22,9 @@ const CustomEdgeLabel: React.FC<CustomEdgeLabelProps> = ({
 }) => {
   const isSlimLabel = label?.includes("SLIM")
   const isValidateLabel = label?.toLowerCase().includes("validate")
-  const isLongLabel = isSlimLabel || isValidateLabel
+  const isMcpLabel = label?.includes("MCP")
+  const isLongLabel =
+    isSlimLabel || isValidateLabel || isMcpLabel || (label && label.length > 6)
 
   return (
     <EdgeLabelRenderer>
@@ -31,7 +33,9 @@ const CustomEdgeLabel: React.FC<CustomEdgeLabelProps> = ({
           "pointer-events-none absolute -translate-x-1/2 -translate-y-1/2",
           "h-5 rounded-lg px-[5px] py-[2px] font-inter text-xs font-normal leading-4",
           "flex items-center justify-center border-none opacity-100 shadow-none",
-          isLongLabel ? "w-[100px] gap-[6px]" : "w-[34px] gap-1",
+          isLongLabel
+            ? "w-auto min-w-[80px] max-w-[120px] gap-[6px]"
+            : "w-[34px] gap-1",
           active
             ? "bg-edge-label-background-active text-edge-label-text-active"
             : "bg-edge-label-background text-edge-label-text",
