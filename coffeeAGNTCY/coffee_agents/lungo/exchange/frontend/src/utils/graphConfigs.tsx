@@ -25,7 +25,7 @@ const CoffeeBeanIcon = (
   <img
     src={farmAgentIcon}
     alt="Coffee Farm Agent Icon"
-    className="h-4 w-4 object-contain opacity-100 brightness-0 invert"
+    className="dark-icon h-4 w-4 object-contain opacity-100"
   />
 )
 
@@ -33,7 +33,7 @@ const GraderAgentIcon = (
   <img
     src={farmAgentIcon}
     alt="Grader Agent Icon"
-    className="h-4 w-4 object-contain opacity-100 brightness-0 invert"
+    className="dark-icon h-4 w-4 object-contain opacity-100"
   />
 )
 
@@ -48,7 +48,7 @@ const SLIM_A2A_CONFIG: GraphConfig = {
           <img
             src={supervisorIcon}
             alt="Supervisor Icon"
-            className="h-4 w-4 object-contain brightness-0 invert"
+            className="dark-icon h-4 w-4 object-contain"
           />
         ),
         label1: "Supervisor Agent",
@@ -99,7 +99,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
           <img
             src={supervisorIcon}
             alt="Supervisor Icon"
-            className="h-4 w-4 object-contain brightness-0 invert"
+            className="dark-icon h-4 w-4 object-contain"
           />
         ),
         label1: "Supervisor Agent",
@@ -174,7 +174,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
       id: "6",
       type: "customNode",
       data: {
-        icon: <TiWeatherCloudy className="h-4 w-4 text-white" />,
+        icon: <TiWeatherCloudy className="dark-icon h-4 w-4" />,
         label1: "MCP Server",
         label2: "Weather",
         handles: "target",

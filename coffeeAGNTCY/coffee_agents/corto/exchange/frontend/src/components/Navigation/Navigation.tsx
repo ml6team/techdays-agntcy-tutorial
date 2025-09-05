@@ -2,7 +2,6 @@
  * Copyright AGNTCY Contributors (https://github.com/agntcy)
  * SPDX-License-Identifier: Apache-2.0
  **/
-
 import React, { useState, useEffect } from "react"
 import { HelpCircle } from "lucide-react"
 import coffeeAgntcyLogo from "@/assets/coffeeAGNTCY_logo.svg"

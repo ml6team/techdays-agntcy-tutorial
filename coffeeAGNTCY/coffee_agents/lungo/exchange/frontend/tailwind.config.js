@@ -12,6 +12,7 @@ export default {
       colors: {
         "app-background": "var(--app-background)",
         "content-background": "var(--content-background)",
+        "primary-bg": "var(--primary-bg)",
 
         "node-background": "var(--node-background)",
         "node-data-background": "var(--node-data-background)",
@@ -38,13 +39,17 @@ export default {
         "chat-background-hover": "var(--chat-background-hover)",
         "chat-text": "var(--chat-text)",
         "chat-input-background": "var(--chat-input-background)",
+        "chat-input-border": "var(--chat-input-border)",
         "chat-dropdown-background": "var(--chat-dropdown-background)",
+        "chat-dropdown-icon": "var(--chat-dropdown-icon)",
 
         "action-background": "var(--action-background)",
         "action-background-hover": "var(--action-background-hover)",
 
         "sidebar-background": "var(--sidebar-background)",
         "sidebar-item-selected": "var(--sidebar-item-selected)",
+        "sidebar-border": "var(--sidebar-border)",
+        "sidebar-text": "var(--sidebar-text)",
 
         "shadow-default": "var(--shadow-default)",
         "overlay-background": "var(--overlay-background)",
@@ -99,6 +104,12 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+      },
+      borderColor: {
+        "sidebar-border": "var(--sidebar-border)",
+        "nav-border": "var(--nav-border)",
+        "modal-border": "var(--modal-border)",
+        "accent-border": "var(--accent-border)",
       },
       spacing: {
         122: "122px",
