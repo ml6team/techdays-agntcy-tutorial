@@ -18,23 +18,23 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-50">
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="bg-modal-background border-modal-border absolute right-4 top-16 w-80 rounded-lg border shadow-lg">
+      <div className="absolute right-4 top-16 w-80 rounded-lg border border-modal-border bg-modal-background shadow-lg">
         <button
           onClick={onClose}
-          className="text-modal-text-secondary hover:bg-modal-hover absolute right-2 top-2 rounded-lg p-1 transition-colors"
+          className="absolute right-2 top-2 rounded-lg p-1 text-modal-text-secondary transition-colors hover:bg-modal-hover"
         >
           <X className="h-4 w-4" />
         </button>
 
         <div className="space-y-4 p-4 pr-10">
           <div>
-            <h3 className="text-modal-text mb-3 text-sm font-normal leading-5 tracking-wide">
+            <h3 className="mb-3 text-sm font-normal leading-5 tracking-wide text-modal-text">
               Build and Release Information
             </h3>
-            <div className="text-modal-text-secondary space-y-2 text-sm">
+            <div className="space-y-2 text-sm text-modal-text-secondary">
               <div className="flex justify-between">
                 <span>Release Version:</span>
-                <span className="text-modal-accent font-mono">0.0.030</span>
+                <span className="font-mono text-modal-accent">0.0.030</span>
               </div>
               <div className="flex justify-between">
                 <span>Build Date:</span>
@@ -44,35 +44,35 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div>
-            <h3 className="text-modal-text mb-3 text-sm font-normal leading-5 tracking-wide">
+            <h3 className="mb-3 text-sm font-normal leading-5 tracking-wide text-modal-text">
               Dependencies:
             </h3>
-            <div className="text-modal-text-secondary space-y-2 text-sm">
+            <div className="space-y-2 text-sm text-modal-text-secondary">
               <div className="flex justify-between">
                 <span>AGNTCY App SDK:</span>
-                <span className="text-modal-accent font-mono">v0.1.4</span>
+                <span className="font-mono text-modal-accent">v0.1.4</span>
               </div>
               <div className="flex justify-between">
                 <span>SLIM:</span>
-                <span className="text-modal-accent font-mono">v0.3.15</span>
+                <span className="font-mono text-modal-accent">v0.3.15</span>
               </div>
               <div className="flex justify-between">
                 <span>Observe SDK:</span>
-                <span className="text-modal-accent font-mono">v1.0.12</span>
+                <span className="font-mono text-modal-accent">v1.0.12</span>
               </div>
               <div className="flex justify-between">
                 <span>A2A:</span>
-                <span className="text-modal-accent font-mono">v0.2.5</span>
+                <span className="font-mono text-modal-accent">v0.2.5</span>
               </div>
               <div className="flex justify-between">
                 <span>MCP:</span>
-                <span className="text-modal-accent font-mono">
+                <span className="font-mono text-modal-accent">
                   &gt;= v1.10.0
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>LangGraph:</span>
-                <span className="text-modal-accent font-mono">
+                <span className="font-mono text-modal-accent">
                   &gt;= v0.4.1
                 </span>
               </div>

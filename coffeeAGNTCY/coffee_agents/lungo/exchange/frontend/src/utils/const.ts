@@ -11,7 +11,6 @@ export const Role = {
 export const EdgeLabelIcon = {
   A2A: "a2a",
   MCP: "mcp",
-  IDENTITY: "identity",
 } as const
 
 export const FarmName = {

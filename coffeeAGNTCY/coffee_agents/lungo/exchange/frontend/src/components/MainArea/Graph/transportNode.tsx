@@ -5,13 +5,11 @@
 
 import React from "react"
 import { Handle, Position } from "@xyflow/react"
-import { DefaultHandleColor } from "./CustomNode"
 import githubIcon from "@/assets/Github.png"
 
 interface TransportNodeData {
   label: string
   active?: boolean
-  handleColor?: string
   githubLink?: string
 }
 
@@ -57,39 +55,33 @@ const TransportNode: React.FC<TransportNodeProps> = ({ data }) => {
         type="target"
         id="top"
         position={Position.Top}
-        className="h-[0.1px] w-[0.1px] border border-gray-600"
-        style={{
-          background: data.handleColor || DefaultHandleColor,
-        }}
+        className="bg-node-data-background h-[0.1px] w-[0.1px] border border-gray-600"
       />
       <Handle
         type="source"
         position={Position.Bottom}
         id="bottom_left"
-        className="h-[0.1px] w-[0.1px] border border-gray-600"
+        className="bg-node-data-background h-[0.1px] w-[0.1px] border border-gray-600"
         style={{
           left: "25%",
-          background: data.handleColor || DefaultHandleColor,
         }}
       />
       <Handle
         type="source"
         position={Position.Bottom}
         id="bottom_center"
-        className="h-[0.1px] w-[0.1px] border border-gray-600"
+        className="bg-node-data-background h-[0.1px] w-[0.1px] border border-gray-600"
         style={{
           left: "50%",
-          background: data.handleColor || DefaultHandleColor,
         }}
       />
       <Handle
         type="source"
         position={Position.Bottom}
         id="bottom_right"
-        className="h-[0.1px] w-[0.1px] border border-gray-600"
+        className="bg-node-data-background h-[0.1px] w-[0.1px] border border-gray-600"
         style={{
           left: "75%",
-          background: data.handleColor || DefaultHandleColor,
         }}
       />
     </div>

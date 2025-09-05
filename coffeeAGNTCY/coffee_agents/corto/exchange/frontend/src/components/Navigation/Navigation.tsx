@@ -30,8 +30,8 @@ const Navigation: React.FC = () => {
     }
   }
   return (
-    <div className="order-0 border-nav-border bg-nav-background box-border flex h-[52px] w-full flex-none flex-grow-0 flex-col items-start self-stretch border-r p-0">
-      <div className="order-0 border-nav-border bg-nav-background-secondary box-border flex h-[52px] w-full flex-none flex-grow-0 flex-row items-center justify-between gap-2 self-stretch border-b px-2 py-[10px] sm:px-4">
+    <div className="order-0 box-border flex h-[52px] w-full flex-none flex-grow-0 flex-col items-start self-stretch border-r border-nav-border bg-nav-background p-0">
+      <div className="order-0 box-border flex h-[52px] w-full flex-none flex-grow-0 flex-row items-center justify-between gap-2 self-stretch border-b border-nav-border bg-nav-background-secondary px-2 py-[10px] sm:px-4">
         <div className="order-0 ml-2 flex h-[45px] w-32 flex-none flex-grow-0 flex-row items-center gap-2 p-0 opacity-100 sm:ml-4 sm:w-40">
           <div className="order-0 flex h-[45px] w-32 flex-none flex-grow-0 flex-row items-center gap-1 p-0 opacity-100 sm:w-40">
             <div className="order-0 flex h-[42px] w-auto flex-none flex-grow-0 items-center justify-center gap-0.5 opacity-100">
@@ -62,7 +62,7 @@ const Navigation: React.FC = () => {
             title="Help"
             onClick={handleHelpClick}
           >
-            <HelpCircle className="text-nav-text h-5 w-5" />
+            <HelpCircle className="h-5 w-5 text-nav-text" />
           </button>
         </div>
       </div>

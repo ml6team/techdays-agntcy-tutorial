@@ -15,11 +15,17 @@ export default {
         "primary-bg": "var(--primary-bg)",
 
         "node-background": "var(--node-background)",
+        "node-data-background": "var(--node-data-background)",
         "node-background-hover": "var(--node-background-hover)",
         "node-background-active": "var(--node-background-active)",
         "node-text-primary": "var(--node-text-primary)",
         "node-text-secondary": "var(--node-text-secondary)",
         "node-icon-background": "var(--node-icon-background)",
+
+        "edge-label-background": "var(--edge-label-background)",
+        "edge-label-background-active": "var(--edge-label-background-active)",
+        "edge-label-text": "var(--edge-label-text)",
+        "edge-label-text-active": "var(--edge-label-text-active)",
 
         "accent-primary": "var(--accent-primary)",
         "accent-border": "var(--accent-border)",

@@ -73,13 +73,13 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="bg-app-background flex h-screen w-screen flex-col overflow-hidden">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-app-background">
       <Navigation />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
-        <div className="bg-app-background border-action-background flex min-w-0 flex-1 flex-col border-l">
+        <div className="flex min-w-0 flex-1 flex-col border-l border-action-background bg-app-background">
           <div className="relative flex-grow">
             <MainArea
               buttonClicked={buttonClicked}
@@ -89,7 +89,7 @@ const App: React.FC = () => {
             />
           </div>
 
-          <div className="bg-overlay-background flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 p-0 md:min-h-[96px]">
+          <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0 md:min-h-[96px]">
             <ChatArea
               messages={messages}
               setMessages={setMessages}

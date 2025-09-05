@@ -96,7 +96,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
 
   return (
     <div
-      className="bg-overlay-background flex w-full flex-col items-center justify-center gap-2 px-4 py-4 sm:px-8 md:px-16 lg:px-[120px]"
+      className="flex w-full flex-col items-center justify-center gap-2 bg-overlay-background px-4 py-4 sm:px-8 md:px-16 lg:px-[120px]"
       style={{ minHeight: currentUserMessage ? "auto" : "120px" }}
     >
       {currentUserMessage && (
@@ -104,7 +104,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
           <UserMessage content={currentUserMessage} />
           {(isAgentLoading || agentResponse) && (
             <div className="flex w-full flex-row items-start gap-1">
-              <div className="bg-action-background flex h-10 w-10 flex-none items-center justify-center rounded-full">
+              <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-action-background">
                 <img
                   src={AgentIcon}
                   alt="Agent"
@@ -112,9 +112,9 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                 />
               </div>
               <div className="flex max-w-[calc(100%-3rem)] flex-1 flex-col items-start justify-center rounded p-1 px-2">
-                <div className="!text-chat-text whitespace-pre-wrap break-words font-inter text-sm font-normal leading-5">
+                <div className="whitespace-pre-wrap break-words font-inter text-sm font-normal leading-5 !text-chat-text">
                   {isAgentLoading ? (
-                    <div className="text-accent-primary animate-pulse">...</div>
+                    <div className="animate-pulse text-accent-primary">...</div>
                   ) : (
                     agentResponse
                   )}
@@ -130,10 +130,10 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       </div>
 
       <div className="flex w-full max-w-[880px] flex-col items-stretch gap-4 p-0 sm:flex-row sm:items-center">
-        <div className="border-node-background bg-chat-background box-border flex h-11 max-w-[814px] flex-1 flex-row items-center rounded border px-0 py-[5px]">
+        <div className="box-border flex h-11 max-w-[814px] flex-1 flex-row items-center rounded border border-node-background bg-chat-background px-0 py-[5px]">
           <div className="flex h-[34px] w-full flex-row items-center gap-[10px] px-4 py-[7px]">
             <input
-              className="!text-chat-text placeholder:text-chat-text h-5 min-w-0 flex-1 border-none bg-transparent font-cisco text-[15px] font-medium leading-5 tracking-[0.005em] outline-none placeholder:opacity-60"
+              className="h-5 min-w-0 flex-1 border-none bg-transparent font-cisco text-[15px] font-medium leading-5 tracking-[0.005em] !text-chat-text outline-none placeholder:text-chat-text placeholder:opacity-60"
               placeholder="Type a prompt to interact with the agents"
               value={content}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

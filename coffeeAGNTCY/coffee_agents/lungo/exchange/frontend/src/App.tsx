@@ -16,7 +16,7 @@ import Sidebar from "@/components/Sidebar/Sidebar"
 import { Message } from "./types/message"
 export const PATTERNS = {
   SLIM_A2A: "slim_a2a",
-  SLIM_MULTI_A2A: "slim_multi_a2a",
+  PUBLISH_SUBSCRIBE: "publish_subscribe",
 } as const
 
 export type PatternType = (typeof PATTERNS)[keyof typeof PATTERNS]
@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const { sendMessage } = useAgentAPI()
 
   const [selectedPattern, setSelectedPattern] = useState<PatternType>(
-    PATTERNS.SLIM_MULTI_A2A,
+    PATTERNS.PUBLISH_SUBSCRIBE,
   )
   const [aiReplied, setAiReplied] = useState<boolean>(false)
   const [buttonClicked, setButtonClicked] = useState<boolean>(false)
@@ -91,7 +91,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-primary-bg">
+    <div className="bg-primary-bg flex h-screen w-screen flex-col overflow-hidden">
       <Navigation />
 
       <div className="flex flex-1 overflow-hidden">
@@ -100,7 +100,7 @@ const App: React.FC = () => {
           onPatternChange={setSelectedPattern}
         />
 
-        <div className="border-action-background bg-app-background flex flex-1 flex-col border-l">
+        <div className="flex flex-1 flex-col border-l border-action-background bg-app-background">
           <div className="relative flex-grow">
             <MainArea
               pattern={selectedPattern}
@@ -111,14 +111,14 @@ const App: React.FC = () => {
             />
           </div>
 
-          <div className="bg-overlay-background flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 p-0">
+          <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0">
             <ChatArea
               setMessages={setMessages}
               setButtonClicked={setButtonClicked}
               setAiReplied={setAiReplied}
               isBottomLayout={true}
               showCoffeeDropdown={selectedPattern === PATTERNS.SLIM_A2A}
-              showCoffeePrompts={selectedPattern === PATTERNS.SLIM_MULTI_A2A}
+              showCoffeePrompts={selectedPattern === PATTERNS.PUBLISH_SUBSCRIBE}
               onCoffeeGraderSelect={handleCoffeeGraderSelect}
               onDropdownSelect={handleDropdownSelect}
               onUserInput={handleUserInput}

@@ -15,8 +15,14 @@
     --content-background: #23282e;
 
     --node-background: #373c42;
+    --node-data-background: #f5f5f5;
     --node-background-hover: #4a4f55;
     --node-background-active: #00142b;
+
+    --edge-label-background: #183056;
+    --edge-label-background-active: #00142b;
+    --edge-label-text: #e8e9ea;
+    --edge-label-text-active: #187adc;
     --node-text-primary: #e8e9ea;
     --node-text-secondary: #e8e9ea;
     --node-icon-background: #59616b;

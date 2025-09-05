@@ -22,7 +22,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({
   return (
     <div className="h-18 order-0 flex w-72 flex-none grow-0 flex-col items-start self-stretch p-0">
       <div
-        className="order-0 flex h-9 w-72 flex-none grow-0 cursor-pointer flex-row items-start gap-2 self-stretch bg-primary-bg px-0 py-2 font-inter"
+        className="order-0 bg-primary-bg flex h-9 w-72 flex-none grow-0 cursor-pointer flex-row items-start gap-2 self-stretch px-0 py-2 font-inter"
         onClick={onToggle}
       >
         <div className="order-0 hidden h-5 w-5 flex-none grow-0" />

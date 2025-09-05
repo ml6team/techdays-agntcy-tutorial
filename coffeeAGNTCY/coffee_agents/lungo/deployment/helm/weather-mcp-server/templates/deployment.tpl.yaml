@@ -27,6 +27,8 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
+        - name: DEFAULT_MESSAGE_TRANSPORT
+          value: "{{ .Values.defaultMessageTransport }}"
         - name: TRANSPORT_SERVER_ENDPOINT
           value: "{{ .Values.transportServerEndpoint }}"
         - name: OTLP_HTTP_ENDPOINT

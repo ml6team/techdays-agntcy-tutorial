@@ -2,11 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from typing import Any
+import logging
 
 import httpx
 import asyncio
 
 from mcp.server.fastmcp import FastMCP
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 from agntcy_app_sdk.factory import AgntcyFactory
 from config.config import (
@@ -16,7 +21,6 @@ from config.config import (
 
 # Initialize a multi-protocol, multi-transport agntcy factory.
 factory = AgntcyFactory("lungo_mcp_server", enable_tracing=True)
-transport = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT)
 
 # Base URLs
 NOMINATIM_BASE = "https://nominatim.openstreetmap.org/search"
@@ -56,6 +60,7 @@ async def geocode_location(location: str) -> tuple[float, float] | None:
 
 @mcp.tool()
 async def get_forecast(location: str) -> str:
+    logging.info(f"Getting weather forecast for location: {location}")
     coords = await geocode_location(location)
     if not coords:
         return f"Could not determine coordinates for location: {location}"
@@ -80,8 +85,10 @@ async def get_forecast(location: str) -> str:
 
 async def main():
     # serve the MCP server via a message bridge
-    bridge = factory.create_bridge(mcp, transport=transport, topic="lungo_weather_service")
+    transport = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT, name="default/default/lungo_weather_service")
+    bridge = factory.create_bridge(mcp._mcp_server, transport=transport, topic="lungo_weather_service")
     await bridge.start(blocking=True)
 
 if __name__ == "__main__":
+    logging.info("Starting weather service...")
     asyncio.run(main())

@@ -8,14 +8,11 @@ import { Handle, Position } from "@xyflow/react"
 import githubIcon from "@/assets/Github.png"
 import agentDirectoryIcon from "@/assets/Agent_directory.png"
 
-export const DefaultHandleColor = "#f5f5f5"
-
 interface CustomNodeData {
   icon: React.ReactNode
   label1: string
   label2: string
   active?: boolean
-  handleColor?: string
   handles?: "all" | "target" | "source"
   verificationStatus?: "verified" | "failed" | "pending"
   verificationBadge?: React.ReactNode
@@ -119,10 +116,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
           type="target"
           position={Position.Top}
           id="target"
-          className="h-[0.1px] w-[0.1px] border border-gray-600"
-          style={{
-            background: data.handleColor || DefaultHandleColor,
-          }}
+          className="bg-node-data-background h-[0.1px] w-[0.1px] border border-gray-600"
         />
       )}
       {(data.handles === "all" || data.handles === "source") && (
@@ -130,10 +124,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
           type="source"
           position={Position.Bottom}
           id="source"
-          className="h-[0.1px] w-[0.1px] border border-gray-600"
-          style={{
-            background: data.handleColor || DefaultHandleColor,
-          }}
+          className="bg-node-data-background h-[0.1px] w-[0.1px] border border-gray-600"
         />
       )}
     </div>

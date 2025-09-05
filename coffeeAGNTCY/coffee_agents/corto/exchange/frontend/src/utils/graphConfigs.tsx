@@ -5,7 +5,6 @@
 
 import supervisorIcon from "@/assets/supervisor.png"
 import graderIcon from "@/assets/Grader-Agent.png"
-import { logger } from "./logger"
 
 interface GraphConfig {
   title: string
@@ -13,11 +12,6 @@ interface GraphConfig {
   edges: any[]
   animationSequence: { ids: string[] }[]
 }
-
-const DEFAULT_EXCHANGE_APP_API_URL = "http://127.0.0.1:8000"
-const EXCHANGE_APP_API_URL =
-  (import.meta.env as any).VITE_EXCHANGE_APP_API_URL ||
-  DEFAULT_EXCHANGE_APP_API_URL
 
 const GraderAgentIcon = (
   <img
@@ -33,10 +27,6 @@ const GraderAgentIcon = (
   />
 )
 
-const commonNodeData = {
-  backgroundColor: "#F5F5F5",
-}
-
 const SLIM_A2A_CONFIG: GraphConfig = {
   title: "SLIM A2A Coffee Agent Communication",
   nodes: [
@@ -44,7 +34,6 @@ const SLIM_A2A_CONFIG: GraphConfig = {
       id: "1",
       type: "customNode",
       data: {
-        ...commonNodeData,
         icon: (
           <img
             src={supervisorIcon}
@@ -71,7 +60,6 @@ const SLIM_A2A_CONFIG: GraphConfig = {
       id: "2",
       type: "customNode",
       data: {
-        ...commonNodeData,
         icon: GraderAgentIcon,
         label1: "Grader Agent",
         label2: "Sommelier",
@@ -89,7 +77,7 @@ const SLIM_A2A_CONFIG: GraphConfig = {
       source: "1",
       target: "2",
       data: {
-        label: "A2A: ",
+        label: "A2A: SLIM",
       },
       type: "custom",
     },
@@ -102,20 +90,11 @@ export const graphConfig = SLIM_A2A_CONFIG
 export const updateA2ALabels = async (
   setEdges: (updater: (edges: any[]) => any[]) => void,
 ): Promise<void> => {
-  try {
-    const response = await fetch(`${EXCHANGE_APP_API_URL}/transport/config`)
-
-    const data = await response.json()
-    const transport = data.transport
-
-    setEdges((edges: any[]) =>
-      edges.map((edge: any) =>
-        edge.id === "1-2"
-          ? { ...edge, data: { ...edge.data, label: `A2A: ${transport}` } }
-          : edge,
-      ),
-    )
-  } catch (error) {
-    logger.apiError("/api/config", error)
-  }
+  setEdges((edges: any[]) =>
+    edges.map((edge: any) =>
+      edge.id === "1-2"
+        ? { ...edge, data: { ...edge.data, label: "A2A: SLIM" } }
+        : edge,
+    ),
+  )
 }

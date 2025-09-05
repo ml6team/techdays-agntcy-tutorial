@@ -64,14 +64,14 @@ class FarmAgentExecutor(AgentExecutor):
 
         validation_error = self._validate_request(context)
         if validation_error:
-            event_queue.enqueue_event(validation_error)
+            await event_queue.enqueue_event(validation_error)
             return
         
         prompt = context.get_user_input()
         task = context.current_task
         if not task:
             task = new_task(context.message)
-            event_queue.enqueue_event(task)
+            await event_queue.enqueue_event(task)
 
         try:
             output = await self.agent.ainvoke(prompt)

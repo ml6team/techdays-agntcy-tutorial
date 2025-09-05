@@ -5,12 +5,10 @@
 
 import React from "react"
 import { Handle, Position } from "@xyflow/react"
-import { DefaultHandleColor } from "./CustomNode"
 
 interface SlimNodeData {
   label: string
   active?: boolean
-  handleColor?: string
 }
 
 interface SlimNodeProps {
@@ -41,8 +39,8 @@ const SlimNode: React.FC<SlimNodeProps> = ({ data }) => {
           width: "0.1px",
           height: "0.1px",
           border: `1px solid darkgrey`,
-          background: data.handleColor || DefaultHandleColor,
         }}
+        className="bg-node-data-background"
       />
       <Handle
         type="source"
@@ -53,8 +51,8 @@ const SlimNode: React.FC<SlimNodeProps> = ({ data }) => {
           width: "0.1px",
           height: "0.1px",
           border: `1px solid darkgrey`,
-          background: data.handleColor || DefaultHandleColor,
         }}
+        className="bg-node-data-background"
       />
       <Handle
         type="source"
@@ -65,8 +63,8 @@ const SlimNode: React.FC<SlimNodeProps> = ({ data }) => {
           width: "0.1px",
           height: "0.1px",
           border: `1px solid darkgrey`,
-          background: data.handleColor || DefaultHandleColor,
         }}
+        className="bg-node-data-background"
       />
       <Handle
         type="source"
@@ -77,8 +75,8 @@ const SlimNode: React.FC<SlimNodeProps> = ({ data }) => {
           width: "0.1px",
           height: "0.1px",
           border: `1px solid darkgrey`,
-          background: data.handleColor || DefaultHandleColor,
         }}
+        className="bg-node-data-background"
       />
     </div>
   )
