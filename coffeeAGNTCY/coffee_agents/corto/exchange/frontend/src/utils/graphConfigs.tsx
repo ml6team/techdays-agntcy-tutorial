@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  **/
 
+import { Node, Edge } from "@xyflow/react"
 import supervisorIcon from "@/assets/supervisor.png"
 import graderIcon from "@/assets/Grader-Agent.png"
 
-interface GraphConfig {
+export interface GraphConfig {
   title: string
-  nodes: any[]
-  edges: any[]
+  nodes: Node[]
+  edges: Edge[]
   animationSequence: { ids: string[] }[]
 }
 

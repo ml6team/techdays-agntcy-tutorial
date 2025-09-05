@@ -4,6 +4,7 @@
  **/
 
 import { TiWeatherCloudy } from "react-icons/ti"
+import { Node, Edge } from "@xyflow/react"
 import supervisorIcon from "@/assets/supervisor.png"
 import farmAgentIcon from "@/assets/Grader-Agent.png"
 import { FarmName } from "./const"
@@ -11,15 +12,14 @@ import { logger } from "./logger"
 
 export interface GraphConfig {
   title: string
-  nodes: any[]
-  edges: any[]
+  nodes: Node[]
+  edges: Edge[]
   animationSequence: { ids: string[] }[]
 }
 
 const DEFAULT_EXCHANGE_APP_API_URL = "http://127.0.0.1:8000"
 const EXCHANGE_APP_API_URL =
-  (import.meta.env as any).VITE_EXCHANGE_APP_API_URL ||
-  DEFAULT_EXCHANGE_APP_API_URL
+  import.meta.env.VITE_EXCHANGE_APP_API_URL || DEFAULT_EXCHANGE_APP_API_URL
 
 const CoffeeBeanIcon = (
   <img
