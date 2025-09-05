@@ -39,7 +39,9 @@ export default {
         "chat-background-hover": "var(--chat-background-hover)",
         "chat-text": "var(--chat-text)",
         "chat-input-background": "var(--chat-input-background)",
+        "chat-input-border": "var(--chat-input-border)",
         "chat-dropdown-background": "var(--chat-dropdown-background)",
+        "chat-dropdown-icon": "var(--chat-dropdown-icon)",
 
         "action-background": "var(--action-background)",
         "action-background-hover": "var(--action-background-hover)",

@@ -104,7 +104,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
           <UserMessage content={currentUserMessage} />
           {(isAgentLoading || agentResponse) && (
             <div className="flex w-full flex-row items-start gap-1">
-              <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-action-background">
+              <div className="chat-avatar-container flex h-10 w-10 flex-none items-center justify-center rounded-full bg-action-background">
                 <img
                   src={AgentIcon}
                   alt="Agent"
@@ -130,10 +130,10 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       </div>
 
       <div className="flex w-full max-w-[880px] flex-col items-stretch gap-4 p-0 sm:flex-row sm:items-center">
-        <div className="box-border flex h-11 max-w-[814px] flex-1 flex-row items-center rounded border border-node-background bg-chat-background px-0 py-[5px]">
+        <div className="box-border flex h-11 max-w-[814px] flex-1 flex-row items-center rounded border border-node-background bg-chat-input-background px-0 py-[5px]">
           <div className="flex h-[34px] w-full flex-row items-center gap-[10px] px-4 py-[7px]">
             <input
-              className="h-5 min-w-0 flex-1 border-none bg-transparent font-cisco text-[15px] font-medium leading-5 tracking-[0.005em] !text-chat-text outline-none placeholder:text-chat-text placeholder:opacity-60"
+              className="h-5 min-w-0 flex-1 border-none bg-transparent font-cisco text-[15px] font-medium leading-5 tracking-[0.005em] text-chat-text outline-none placeholder:text-chat-text placeholder:opacity-60"
               placeholder="Type a prompt to interact with the agents"
               value={content}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -146,9 +146,12 @@ const ChatArea: React.FC<ChatAreaProps> = ({
         </div>
         <div className="flex h-11 w-[50px] flex-none flex-row items-start p-0">
           <button
-            onClick={!content.trim() || loading ? undefined : processMessage}
-            disabled={!content.trim() || loading}
-            className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px] disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={() => {
+              if (content.trim() && !loading) {
+                processMessage()
+              }
+            }}
+            className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
           >
             <img src={airplaneSvg} alt="Send" className="h-[18px] w-[18px]" />
           </button>

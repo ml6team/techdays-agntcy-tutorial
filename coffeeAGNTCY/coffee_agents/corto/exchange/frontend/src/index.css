@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.theme-switching * {
+  transition: none !important;
+  animation-duration: 0s !important;
+}
+
 @layer base {
   body {
     @apply m-0 p-0 font-inter;
@@ -27,9 +32,11 @@
     --node-text-primary: #e8e9ea;
     --node-text-secondary: #e8e9ea;
     --node-icon-background: #59616b;
+    --node-icon-border: transparent;
 
     --accent-primary: #187adc;
-    --accent-border: #187adc;
+    --accent-border: #00409f;
+    --blue-700: #00409f;
 
     --nav-background: #f5f8fd;
     --nav-background-secondary: #eff3fc;
@@ -39,8 +46,9 @@
     --chat-background: #1a2432;
     --chat-background-hover: #1f2a3a;
     --chat-text: #fbfcfe;
-    --chat-input-background: #23282e;
+    --chat-input-background: #1a2432;
     --chat-dropdown-background: #23282e;
+    --chat-dropdown-icon: #59616b;
 
     --action-background: #00142b;
     --action-background-hover: #0d274d;
@@ -49,6 +57,9 @@
     --sidebar-item-selected: #0d274d;
     --sidebar-border: #00142b;
     --sidebar-text: #fbfcfe;
+
+    --github-icon: url("@/assets/Github.png");
+    --agent-directory-icon: url("@/assets/Agent_directory.png");
 
     --shadow-default: rgba(0, 0, 0, 0.6);
     --overlay-background: #2e3e57;
@@ -91,38 +102,48 @@
   }
 
   body[data-theme="light"] {
-    --app-background: #eff3fc !important;
-    --content-background: #eff3fc !important;
-    --primary-bg: #eff3fc !important;
+    --app-background: #f5f8fd !important;
+    --content-background: #f5f8fd !important;
+    --primary-bg: #f5f8fd !important;
 
-    --node-background: #eff3fc !important;
-    --node-background-hover: #eff3fc !important;
-    --node-background-active: #00142b !important;
-    --node-text-primary: #00142b !important;
-    --node-text-secondary: #00142b !important;
-    --node-icon-background: #f8fafc !important;
+    --node-background: #e3eafa !important;
+    --node-background-hover: #e3eafa !important;
+    --node-background-active: #187adc !important;
+    --edge-label-background: #d5dff7;
+    --edge-label-background-active: #187adc;
+    --edge-label-text: #3c4551;
+    --edge-label-text-active: #ffffff;
+    --node-text-primary: #3c4551 !important;
+    --node-text-secondary: #3c4551 !important;
+    --node-icon-background: #c8d5f5 !important;
+    --node-icon-border: #187adc !important;
 
     --accent-primary: #187adc !important;
-    --accent-border: #00409f !important;
+    --accent-border: #187adc !important;
+    --blue-700: #00409f !important;
 
     --nav-background: #f5f8fd !important;
     --nav-background-secondary: #eff3fc !important;
-    --nav-border: #dbe0e5 !important;
+    --nav-border: #d5dff7 !important;
     --nav-text: #1d69cc !important;
 
-    --chat-background: #eff3fc !important;
-    --chat-background-hover: #f5f8fd !important;
+    --chat-background: #dee6f9 !important;
+    --chat-background-hover: #d5dff7 !important;
     --chat-text: #00142b !important;
-    --chat-input-background: #ffffff !important;
-    --chat-dropdown-background: #ffffff !important;
+    --chat-input-background: #eff3fc !important;
+    --chat-dropdown-background: #dee6f9 !important;
+    --chat-dropdown-icon: #3c4551 !important;
 
-    --action-background: #00142b !important;
+    --action-background: #fbfcfe !important;
     --action-background-hover: #0d274d !important;
 
-    --sidebar-background: #e8eefb !important;
+    --sidebar-background: #fbfcfe !important;
     --sidebar-item-selected: #eff3fc !important;
-    --sidebar-border: #e8eefb !important;
+    --sidebar-border: #fbfcfe !important;
     --sidebar-text: #00142b !important;
+
+    --github-icon: url("@/assets/Github-light.png") !important;
+    --agent-directory-icon: url("@/assets/Agent_directory-light.png") !important;
 
     --shadow-default: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
     --overlay-background: #f5f8fd !important;
@@ -138,17 +159,25 @@
     --modal-button-hover: #0d274d !important;
   }
 
-  /* Light mode specific styles */
-  body[data-theme="light"] .bg-node-background:not(.bg-node-background-active) {
-    border: 1px solid var(--accent-border) !important;
+  .theme-icon-github {
+    content: var(--github-icon);
   }
 
-  /* Fix text visibility in active nodes for light mode */
+  .theme-icon-agent-directory {
+    content: var(--agent-directory-icon);
+  }
+
+  body[data-theme="light"] .chat-avatar-container {
+    background-color: #187adc !important;
+  }
+
   body[data-theme="light"] .bg-node-background-active .text-node-text-primary {
     color: #ffffff !important;
   }
 
-  body[data-theme="light"] .bg-node-background-active .text-node-text-secondary {
+  body[data-theme="light"]
+    .bg-node-background-active
+    .text-node-text-secondary {
     color: #e8e9ea !important;
   }
 
