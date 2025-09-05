@@ -13,6 +13,7 @@ import MainArea from "@/components/MainArea/MainArea"
 import { useAgentAPI } from "@/hooks/useAgentAPI"
 import ChatArea from "@/components/Chat/ChatArea"
 import Sidebar from "@/components/Sidebar/Sidebar"
+import { ThemeProvider } from "@/contexts/ThemeContext"
 import { Message } from "./types/message"
 export const PATTERNS = {
   SLIM_A2A: "slim_a2a",
@@ -91,46 +92,50 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="bg-primary-bg flex h-screen w-screen flex-col overflow-hidden">
-      <Navigation />
+    <ThemeProvider>
+      <div className="bg-primary-bg flex h-screen w-screen flex-col overflow-hidden">
+        <Navigation />
 
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar
-          selectedPattern={selectedPattern}
-          onPatternChange={setSelectedPattern}
-        />
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar
+            selectedPattern={selectedPattern}
+            onPatternChange={setSelectedPattern}
+          />
 
-        <div className="flex flex-1 flex-col border-l border-action-background bg-app-background">
-          <div className="relative flex-grow">
-            <MainArea
-              pattern={selectedPattern}
-              buttonClicked={buttonClicked}
-              setButtonClicked={setButtonClicked}
-              aiReplied={aiReplied}
-              setAiReplied={setAiReplied}
-            />
-          </div>
+          <div className="flex flex-1 flex-col border-l border-action-background bg-app-background">
+            <div className="relative flex-grow">
+              <MainArea
+                pattern={selectedPattern}
+                buttonClicked={buttonClicked}
+                setButtonClicked={setButtonClicked}
+                aiReplied={aiReplied}
+                setAiReplied={setAiReplied}
+              />
+            </div>
 
-          <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0">
-            <ChatArea
-              setMessages={setMessages}
-              setButtonClicked={setButtonClicked}
-              setAiReplied={setAiReplied}
-              isBottomLayout={true}
-              showCoffeeDropdown={selectedPattern === PATTERNS.SLIM_A2A}
-              showCoffeePrompts={selectedPattern === PATTERNS.PUBLISH_SUBSCRIBE}
-              onCoffeeGraderSelect={handleCoffeeGraderSelect}
-              onDropdownSelect={handleDropdownSelect}
-              onUserInput={handleUserInput}
-              onApiResponse={handleApiResponse}
-              currentUserMessage={currentUserMessage}
-              agentResponse={agentResponse}
-              isAgentLoading={isAgentLoading}
-            />
+            <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0">
+              <ChatArea
+                setMessages={setMessages}
+                setButtonClicked={setButtonClicked}
+                setAiReplied={setAiReplied}
+                isBottomLayout={true}
+                showCoffeeDropdown={selectedPattern === PATTERNS.SLIM_A2A}
+                showCoffeePrompts={
+                  selectedPattern === PATTERNS.PUBLISH_SUBSCRIBE
+                }
+                onCoffeeGraderSelect={handleCoffeeGraderSelect}
+                onDropdownSelect={handleDropdownSelect}
+                onUserInput={handleUserInput}
+                onApiResponse={handleApiResponse}
+                currentUserMessage={currentUserMessage}
+                agentResponse={agentResponse}
+                isAgentLoading={isAgentLoading}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ThemeProvider>
   )
 }
 

@@ -102,61 +102,61 @@
   }
 
   body[data-theme="light"] {
-    --app-background: #f5f8fd !important;
-    --content-background: #f5f8fd !important;
-    --primary-bg: #f5f8fd !important;
+    --app-background: #f5f8fd;
+    --content-background: #f5f8fd;
+    --primary-bg: #f5f8fd;
 
-    --node-background: #dee6f9 !important;
-    --node-background-hover: #e3eafa !important;
-    --node-background-active: #187adc !important;
+    --node-background: #dee6f9;
+    --node-background-hover: #e3eafa;
+    --node-background-active: #187adc;
     --edge-label-background: #d5dff7;
     --edge-label-background-active: #187adc;
     --edge-label-text: #3c4551;
     --edge-label-text-active: #ffffff;
-    --node-text-primary: #3c4551 !important;
-    --node-text-secondary: #3c4551 !important;
-    --node-icon-background: #c8d5f5 !important;
-    --node-icon-border: #187adc !important;
+    --node-text-primary: #3c4551;
+    --node-text-secondary: #3c4551;
+    --node-icon-background: #c8d5f5;
+    --node-icon-border: #187adc;
 
-    --accent-primary: #187adc !important;
-    --accent-border: #187adc !important;
-    --blue-700: #00409f !important;
+    --accent-primary: #187adc;
+    --accent-border: #187adc;
+    --blue-700: #00409f;
 
-    --nav-background: #f5f8fd !important;
-    --nav-background-secondary: #eff3fc !important;
-    --nav-border: #d5dff7 !important;
-    --nav-text: #1d69cc !important;
+    --nav-background: #f5f8fd;
+    --nav-background-secondary: #eff3fc;
+    --nav-border: #d5dff7;
+    --nav-text: #1d69cc;
 
-    --chat-background: #dee6f9 !important;
-    --chat-background-hover: #d5dff7 !important;
-    --chat-text: #00142b !important;
-    --chat-input-background: #eff3fc !important;
-    --chat-dropdown-background: #dee6f9 !important;
-    --chat-dropdown-icon: #3c4551 !important;
+    --chat-background: #dee6f9;
+    --chat-background-hover: #d5dff7;
+    --chat-text: #00142b;
+    --chat-input-background: #eff3fc;
+    --chat-dropdown-background: #dee6f9;
+    --chat-dropdown-icon: #3c4551;
 
-    --action-background: #fbfcfe !important;
-    --action-background-hover: #0d274d !important;
+    --action-background: #fbfcfe;
+    --action-background-hover: #0d274d;
 
-    --sidebar-background: #fbfcfe !important;
-    --sidebar-item-selected: #eff3fc !important;
-    --sidebar-border: #fbfcfe !important;
-    --sidebar-text: #00142b !important;
+    --sidebar-background: #fbfcfe;
+    --sidebar-item-selected: #eff3fc;
+    --sidebar-border: #fbfcfe;
+    --sidebar-text: #00142b;
 
-    --github-icon: url("@/assets/Github-light.png") !important;
-    --agent-directory-icon: url("@/assets/Agent_directory-light.png") !important;
+    --github-icon: url("@/assets/Github-light.png");
+    --agent-directory-icon: url("@/assets/Agent_directory-light.png");
 
-    --shadow-default: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-    --overlay-background: #f5f8fd !important;
+    --shadow-default: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --overlay-background: #f5f8fd;
 
-    --modal-background: #ffffff !important;
-    --modal-border: #dbe0e5 !important;
-    --modal-text: #00142b !important;
-    --modal-text-secondary: #00142b !important;
-    --modal-accent: #60a5fa !important;
-    --modal-hover: #f5f8fd !important;
-    --modal-button: #00142b !important;
-    --modal-button-text: #ffffff !important;
-    --modal-button-hover: #0d274d !important;
+    --modal-background: #ffffff;
+    --modal-border: #dbe0e5;
+    --modal-text: #00142b;
+    --modal-text-secondary: #00142b;
+    --modal-accent: #60a5fa;
+    --modal-hover: #f5f8fd;
+    --modal-button: #00142b;
+    --modal-button-text: #ffffff;
+    --modal-button-hover: #0d274d;
   }
 
   .theme-icon-github {
@@ -168,17 +168,17 @@
   }
 
   body[data-theme="light"] .chat-avatar-container {
-    background-color: #187adc !important;
+    background-color: #187adc;
   }
 
   body[data-theme="light"] .bg-node-background-active .text-node-text-primary {
-    color: #ffffff !important;
+    color: #ffffff;
   }
 
   body[data-theme="light"]
     .bg-node-background-active
     .text-node-text-secondary {
-    color: #e8e9ea !important;
+    color: #e8e9ea;
   }
 
   .dark-icon {

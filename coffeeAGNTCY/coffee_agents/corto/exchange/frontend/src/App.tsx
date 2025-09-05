@@ -12,6 +12,7 @@ import ChatArea from "@/components/Chat/ChatArea"
 import Navigation from "@/components/Navigation/Navigation"
 import MainArea from "@/components/MainArea/MainArea"
 import Sidebar from "@/components/Sidebar/Sidebar"
+import { ThemeProvider } from "@/contexts/ThemeContext"
 import { Message } from "./types/Message"
 import { useAgentAPI } from "@/hooks/useAgentAPI"
 import { logger } from "./utils/logger"
@@ -73,41 +74,43 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-app-background">
-      <Navigation />
+    <ThemeProvider>
+      <div className="flex h-screen w-screen flex-col overflow-hidden bg-app-background">
+        <Navigation />
 
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar />
 
-        <div className="flex min-w-0 flex-1 flex-col border-l border-action-background bg-app-background">
-          <div className="relative flex-grow">
-            <MainArea
-              buttonClicked={buttonClicked}
-              setButtonClicked={setButtonClicked}
-              aiReplied={aiReplied}
-              setAiReplied={setAiReplied}
-            />
-          </div>
+          <div className="flex min-w-0 flex-1 flex-col border-l border-action-background bg-app-background">
+            <div className="relative flex-grow">
+              <MainArea
+                buttonClicked={buttonClicked}
+                setButtonClicked={setButtonClicked}
+                aiReplied={aiReplied}
+                setAiReplied={setAiReplied}
+              />
+            </div>
 
-          <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0 md:min-h-[96px]">
-            <ChatArea
-              messages={messages}
-              setMessages={setMessages}
-              setButtonClicked={setButtonClicked}
-              setAiReplied={setAiReplied}
-              isBottomLayout={true}
-              showCoffeeDropdown={true}
-              onDropdownSelect={handleDropdownSelect}
-              onUserInput={handleUserInput}
-              onApiResponse={handleApiResponse}
-              currentUserMessage={currentUserMessage}
-              agentResponse={agentResponse}
-              isAgentLoading={isAgentLoading}
-            />
+            <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0 md:min-h-[96px]">
+              <ChatArea
+                messages={messages}
+                setMessages={setMessages}
+                setButtonClicked={setButtonClicked}
+                setAiReplied={setAiReplied}
+                isBottomLayout={true}
+                showCoffeeDropdown={true}
+                onDropdownSelect={handleDropdownSelect}
+                onUserInput={handleUserInput}
+                onApiResponse={handleApiResponse}
+                currentUserMessage={currentUserMessage}
+                agentResponse={agentResponse}
+                isAgentLoading={isAgentLoading}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ThemeProvider>
   )
 }
 

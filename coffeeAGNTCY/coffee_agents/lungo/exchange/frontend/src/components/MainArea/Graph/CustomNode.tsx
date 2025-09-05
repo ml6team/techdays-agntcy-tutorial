@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  **/
 
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Handle, Position } from "@xyflow/react"
 import githubIcon from "@/assets/Github.png"
 import githubIconLight from "@/assets/Github_lightmode.png"
 import agentDirectoryIconDark from "@/assets/Agent_directory.png"
 import agentDirectoryIconLight from "@/assets/Agent_Icon_light.png"
 import identityBadgeIcon from "@/assets/identity_badge.svg"
+import { useTheme } from "@/contexts/ThemeContext"
 
 interface CustomNodeData {
   icon: React.ReactNode
@@ -28,22 +29,7 @@ interface CustomNodeProps {
 }
 
 const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
-  const [theme, setTheme] = useState(
-    document.body.getAttribute("data-theme") || "dark",
-  )
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setTheme(document.body.getAttribute("data-theme") || "dark")
-    })
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    })
-
-    return () => observer.disconnect()
-  }, [])
+  const { theme } = useTheme()
 
   const githubIconSrc = theme === "light" ? githubIconLight : githubIcon
   const agentDirectoryIcon =
