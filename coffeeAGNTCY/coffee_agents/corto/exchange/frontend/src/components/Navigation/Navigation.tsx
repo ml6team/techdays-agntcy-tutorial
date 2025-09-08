@@ -42,7 +42,8 @@ const Navigation: React.FC = () => {
         <div className="order-3 flex flex-none flex-grow-0 flex-row items-center justify-end gap-2 p-0">
           <button
             className="order-0 flex h-8 w-8 flex-none flex-grow-0 items-center justify-center rounded p-1.5 transition-opacity hover:opacity-80"
-            title={`Switch to ${isLightMode ? "dark" : "light"} mode`}
+            title={`Switch between dark and light mode (currently ${isLightMode ? "light" : "dark"} mode)`}
+            aria-label={`Switch between dark and light mode (currently ${isLightMode ? "light" : "dark"} mode)`}
             onClick={handleThemeToggle}
           >
             <ThemeToggleIcon className="h-5 w-5 text-nav-text" />
