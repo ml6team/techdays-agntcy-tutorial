@@ -6,10 +6,10 @@
 import React from "react"
 import { Handle, Position } from "@xyflow/react"
 import githubIconDark from "@/assets/Github.png"
-import agentDirectoryIconDark from "@/assets/Agent_directory.png"
 import githubIconLight from "@/assets/Github_lightmode.png"
+import agentDirectoryIconDark from "@/assets/Agent_directory.png"
 import agentDirectoryIconLight from "@/assets/Agent_Icon_light.png"
-import { useTheme } from "@/contexts/ThemeContext"
+import { useThemeIcon } from "@/hooks/useThemeIcon"
 
 interface CustomNodeData {
   icon: React.ReactNode
@@ -28,11 +28,14 @@ interface CustomNodeProps {
 }
 
 const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
-  const { theme } = useTheme()
-
-  const githubIcon = theme === "light" ? githubIconLight : githubIconDark
-  const agentDirectoryIcon =
-    theme === "light" ? agentDirectoryIconLight : agentDirectoryIconDark
+  const githubIcon = useThemeIcon({
+    light: githubIconLight,
+    dark: githubIconDark,
+  })
+  const agentDirectoryIcon = useThemeIcon({
+    light: agentDirectoryIconLight,
+    dark: agentDirectoryIconDark,
+  })
 
   const activeClasses = data.active
     ? "bg-node-background-active outline outline-2 outline-accent-border shadow-[var(--shadow-default)_0px_6px_8px]"

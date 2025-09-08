@@ -26,11 +26,11 @@ const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
         className="flex h-9 w-[288px] cursor-pointer items-start gap-2 bg-sidebar-background px-5 py-2 pl-8 transition-colors hover:bg-sidebar-item-selected"
         onClick={onToggle}
       >
-        <span className="text-sidebar-text flex-1 font-inter text-sm font-normal leading-5 tracking-[0.25px]">
+        <span className="flex-1 font-inter text-sm font-normal leading-5 tracking-[0.25px] text-sidebar-text">
           {title}
         </span>
         <ChevronUp
-          className={`text-sidebar-text h-5 w-5 flex-none transition-transform ${
+          className={`h-5 w-5 flex-none text-sidebar-text transition-transform ${
             isExpanded ? "rotate-0" : "rotate-180"
           }`}
         />

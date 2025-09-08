@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  **/
 
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Handle, Position } from "@xyflow/react"
+import { useThemeIcon } from "@/hooks/useThemeIcon"
 import githubIcon from "@/assets/Github.png"
 import githubIconLight from "@/assets/Github_lightmode.png"
 
@@ -19,24 +20,10 @@ interface TransportNodeProps {
 }
 
 const TransportNode: React.FC<TransportNodeProps> = ({ data }) => {
-  const [theme, setTheme] = useState(
-    document.body.getAttribute("data-theme") || "dark",
-  )
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setTheme(document.body.getAttribute("data-theme") || "dark")
-    })
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
-  const githubIconSrc = theme === "light" ? githubIconLight : githubIcon
+  const githubIconSrc = useThemeIcon({
+    light: githubIconLight,
+    dark: githubIcon,
+  })
 
   const activeClasses = data.active
     ? "bg-node-background-active outline outline-2 outline-accent-border shadow-[var(--shadow-default)_0px_6px_8px]"

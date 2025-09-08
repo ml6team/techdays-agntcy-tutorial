@@ -6,7 +6,7 @@ import React, { useState } from "react"
 import { HelpCircle } from "lucide-react"
 import coffeeAgntcyLogo from "@/assets/coffeeAGNTCY_logo.svg"
 import ThemeToggleIcon from "../icons/ThemeToggleIcon"
-import { useTheme } from "@/contexts/ThemeContext"
+import { useTheme } from "@/hooks/useTheme"
 import InfoModal from "./InfoModal"
 
 const Navigation: React.FC = () => {

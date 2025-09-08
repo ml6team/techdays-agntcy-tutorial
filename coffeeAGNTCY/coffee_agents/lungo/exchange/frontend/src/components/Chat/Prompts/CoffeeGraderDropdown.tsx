@@ -67,7 +67,7 @@ const CoffeeGraderDropdown: React.FC<CoffeeGraderDropdownProps> = ({
         </div>
         <div className="relative order-1 h-6 w-6 flex-none flex-grow-0">
           <div
-            className={`bg-chat-dropdown-icon absolute bottom-[36.35%] left-[26.77%] right-[26.77%] top-[36.35%] transition-transform duration-300 ease-in-out ${isOpen ? "rotate-180" : ""} `}
+            className={`absolute bottom-[36.35%] left-[26.77%] right-[26.77%] top-[36.35%] bg-chat-dropdown-icon transition-transform duration-300 ease-in-out ${isOpen ? "rotate-180" : ""} `}
             style={{ clipPath: "polygon(50% 100%, 0% 0%, 100% 0%)" }}
           ></div>
         </div>

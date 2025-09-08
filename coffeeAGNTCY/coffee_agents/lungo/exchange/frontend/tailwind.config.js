@@ -11,8 +11,6 @@ export default {
     extend: {
       colors: {
         "app-background": "var(--app-background)",
-        "content-background": "var(--content-background)",
-        "primary-bg": "var(--primary-bg)",
 
         "node-background": "var(--node-background)",
         "node-data-background": "var(--node-data-background)",
@@ -131,7 +129,7 @@ export default {
         96: "96px",
       },
       fontFamily: {
-        cisco: ["CiscoSansTT", "Inter"],
+        cisco: ["CiscoSans", "Inter"],
         inter: ["Inter"],
       },
       animation: {

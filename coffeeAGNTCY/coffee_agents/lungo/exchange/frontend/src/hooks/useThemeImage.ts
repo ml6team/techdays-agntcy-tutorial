@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **/
 
-import { useTheme } from "@/contexts/ThemeContext"
+import { useTheme } from "@/hooks/useTheme"
 
 interface ThemeImageMap {
   light: string
@@ -11,7 +11,7 @@ interface ThemeImageMap {
 }
 
 export const useThemeImage = (imageMap: ThemeImageMap): string => {
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
 
-  return theme === "light" ? imageMap.light : imageMap.dark
+  return resolvedTheme === "light" ? imageMap.light : imageMap.dark
 }
