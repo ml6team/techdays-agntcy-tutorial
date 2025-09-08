@@ -138,12 +138,12 @@
     --action-background-hover: #0d274d;
 
     --sidebar-background: #fbfcfe;
-    --sidebar-item-selected: #eff3fc;
+    --sidebar-item-selected: #dee6f9;
     --sidebar-border: #fbfcfe;
     --sidebar-text: #00142b;
 
-    --github-icon: url("@/assets/Github-light.png");
-    --agent-directory-icon: url("@/assets/Agent_directory-light.png");
+    --github-icon: url("@/assets/Github_lightmode.png");
+    --agent-directory-icon: url("@/assets/Agent_Icon_light.png");
 
     --shadow-default: 0 4px 8px rgba(0, 0, 0, 0.1);
     --overlay-background: #f5f8fd;
