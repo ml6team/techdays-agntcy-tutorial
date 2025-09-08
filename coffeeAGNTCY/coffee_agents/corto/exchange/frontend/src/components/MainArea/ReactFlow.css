@@ -7,8 +7,16 @@
   background: #23282e !important;
 }
 
+body[data-theme="light"] .react-flow {
+  background: var(--app-background) !important;
+}
+
 .react-flow__background {
   fill: #23282e !important;
+}
+
+body[data-theme="light"] .react-flow__background {
+  fill: var(--app-background) !important;
 }
 
 .react-flow__controls {
@@ -22,6 +30,11 @@
   flex-direction: column !important;
 }
 
+body[data-theme="light"] .react-flow__controls {
+  background: var(--node-background);
+  border: none;
+}
+
 .react-flow__controls-button {
   background: transparent;
   border: none;
@@ -32,8 +45,16 @@
   flex-shrink: 0 !important;
 }
 
+body[data-theme="light"] .react-flow__controls-button {
+  color: var(--node-text-primary);
+}
+
 .react-flow__controls-button:hover {
   background: rgba(47, 54, 61, 0.8);
+}
+
+body[data-theme="light"] .react-flow__controls-button:hover {
+  background: var(--node-background-hover);
 }
 
 .react-flow__edge-path {

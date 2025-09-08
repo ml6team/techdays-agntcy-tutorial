@@ -4,6 +4,7 @@
  **/
 
 import { TiWeatherCloudy } from "react-icons/ti"
+import { Node, Edge } from "@xyflow/react"
 import supervisorIcon from "@/assets/supervisor.png"
 import farmAgentIcon from "@/assets/Grader-Agent.png"
 import { FarmName } from "./const"
@@ -11,21 +12,20 @@ import { logger } from "./logger"
 
 export interface GraphConfig {
   title: string
-  nodes: any[]
-  edges: any[]
+  nodes: Node[]
+  edges: Edge[]
   animationSequence: { ids: string[] }[]
 }
 
 const DEFAULT_EXCHANGE_APP_API_URL = "http://127.0.0.1:8000"
 const EXCHANGE_APP_API_URL =
-  (import.meta.env as any).VITE_EXCHANGE_APP_API_URL ||
-  DEFAULT_EXCHANGE_APP_API_URL
+  import.meta.env.VITE_EXCHANGE_APP_API_URL || DEFAULT_EXCHANGE_APP_API_URL
 
 const CoffeeBeanIcon = (
   <img
     src={farmAgentIcon}
     alt="Coffee Farm Agent Icon"
-    className="h-4 w-4 object-contain opacity-100 brightness-0 invert"
+    className="dark-icon h-4 w-4 object-contain opacity-100"
   />
 )
 
@@ -33,7 +33,7 @@ const GraderAgentIcon = (
   <img
     src={farmAgentIcon}
     alt="Grader Agent Icon"
-    className="h-4 w-4 object-contain opacity-100 brightness-0 invert"
+    className="dark-icon h-4 w-4 object-contain opacity-100"
   />
 )
 
@@ -48,7 +48,7 @@ const SLIM_A2A_CONFIG: GraphConfig = {
           <img
             src={supervisorIcon}
             alt="Supervisor Icon"
-            className="h-4 w-4 object-contain brightness-0 invert"
+            className="dark-icon h-4 w-4 object-contain"
           />
         ),
         label1: "Supervisor Agent",
@@ -99,7 +99,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
           <img
             src={supervisorIcon}
             alt="Supervisor Icon"
-            className="h-4 w-4 object-contain brightness-0 invert"
+            className="dark-icon h-4 w-4 object-contain"
           />
         ),
         label1: "Supervisor Agent",
@@ -107,7 +107,8 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         handles: "source",
         githubLink:
           "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/exchange/graph/graph.py#L50",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/34f05b1e-3bd3-4a21-b8c5-e9f191942ed0",
       },
       position: { x: 527.1332569384248, y: 76.4805787605829 },
     },
@@ -133,7 +134,8 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         verificationStatus: "failed",
         githubLink:
           "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/farms/brazil/agent.py#L30",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/f52e742d-f9fc-41f5-a431-23ca69c4ef65",
       },
 
       position: { x: 232.0903941835277, y: 503.93174725714437 },
@@ -150,7 +152,8 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         verificationStatus: "verified",
         githubLink:
           "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/farms/colombia/agent.py#L54",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/1991a0f9-a24d-4197-902a-3de0a0c5920a",
       },
       position: { x: 521.266082170288, y: 505.38817113883306 },
     },
@@ -166,7 +169,8 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         verificationStatus: "verified",
         githubLink:
           "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/farms/vietnam/agent.py#L30",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/6907d9f6-6fea-4e2c-93d6-ab7914204a6f",
       },
       position: { x: 832.9824511707582, y: 505.08339631990395 },
     },
@@ -174,13 +178,14 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
       id: "6",
       type: "customNode",
       data: {
-        icon: <TiWeatherCloudy className="h-4 w-4 text-white" />,
+        icon: <TiWeatherCloudy className="dark-icon h-4 w-4" />,
         label1: "MCP Server",
         label2: "Weather",
         handles: "target",
         githubLink:
           "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/mcp_servers/weather_service.py#L25",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/8d720b8c-59a7-4ea4-9254-68c764e1f9b1",
       },
       position: { x: 569.3959708104304, y: 731.9104402412228 },
     },
