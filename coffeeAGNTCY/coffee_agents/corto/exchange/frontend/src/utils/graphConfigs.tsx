@@ -52,8 +52,9 @@ const SLIM_A2A_CONFIG: GraphConfig = {
         handles: "source",
         verificationStatus: "verified",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/tree/main/coffeeAGNTCY/coffee_agents/corto/exchange",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/corto/exchange/graph/graph.py#L22",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/a4940cac-fbf1-40a7-bf11-d5c67e7e0b82",
       },
       position: { x: 529.1332569384248, y: 159.4805787605829 },
     },
@@ -66,8 +67,9 @@ const SLIM_A2A_CONFIG: GraphConfig = {
         label2: "Sommelier",
         handles: "target",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/tree/main/coffeeAGNTCY/coffee_agents/corto/farm",
-        agentDirectoryLink: "https://agent-directory.outshift.com/explore",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/corto/farm/agent.py#L21",
+        agentDirectoryLink:
+          "https://agent-directory.outshift.com/explore/0bd11abc-2148-402e-abc2-568cce55117c",
       },
       position: { x: 534.0903941835277, y: 582.9317472571444 },
     },
