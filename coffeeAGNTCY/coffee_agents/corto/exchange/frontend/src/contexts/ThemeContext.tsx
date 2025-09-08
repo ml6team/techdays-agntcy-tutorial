@@ -65,7 +65,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }
 
   const toggleTheme = () => {
-    // Simple toggle between light and dark based on current resolved theme
     if (resolvedTheme === "light") {
       setThemeState("dark")
     } else {
