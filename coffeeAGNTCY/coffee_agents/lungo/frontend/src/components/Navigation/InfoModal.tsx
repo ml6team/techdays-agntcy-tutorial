@@ -34,11 +34,11 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
             <div className="space-y-2 text-sm text-modal-text-secondary">
               <div className="flex justify-between">
                 <span>Release Version:</span>
-                <span className="font-mono text-modal-accent">0.0.030</span>
+                <span className="font-mono text-modal-accent">0.0.037</span>
               </div>
               <div className="flex justify-between">
                 <span>Build Date:</span>
-                <span className="font-mono">August 22, 2025</span>
+                <span className="font-mono">September 9, 2025</span>
               </div>
             </div>
           </div>
@@ -50,19 +50,24 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
             <div className="space-y-2 text-sm text-modal-text-secondary">
               <div className="flex justify-between">
                 <span>AGNTCY App SDK:</span>
-                <span className="font-mono text-modal-accent">v0.1.4</span>
+                <span className="font-mono text-modal-accent"> v0.2.0</span>
               </div>
+
               <div className="flex justify-between">
                 <span>SLIM:</span>
-                <span className="font-mono text-modal-accent">v0.3.15</span>
+                <span className="font-mono text-modal-accent">v0.4.0</span>
               </div>
               <div className="flex justify-between">
                 <span>Observe SDK:</span>
-                <span className="font-mono text-modal-accent">v1.0.12</span>
+                <span className="font-mono text-modal-accent">v1.0.15</span>
               </div>
               <div className="flex justify-between">
                 <span>A2A:</span>
-                <span className="font-mono text-modal-accent">v0.2.5</span>
+                <span className="font-mono text-modal-accent">v0.2.16</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Identity:</span>
+                <span className="font-mono text-modal-accent">v0.0.2</span>
               </div>
               <div className="flex justify-between">
                 <span>MCP:</span>
