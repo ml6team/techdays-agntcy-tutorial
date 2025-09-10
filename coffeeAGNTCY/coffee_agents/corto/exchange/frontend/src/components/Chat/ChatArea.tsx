@@ -44,9 +44,22 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   isAgentLoading,
 }) => {
   const [content, setContent] = useState<string>("")
+  const [isMinimized, setIsMinimized] = useState<boolean>(false)
   const { loading, sendMessageWithCallback } = useAgentAPI()
 
+  const handleMinimize = () => {
+    setIsMinimized(true)
+  }
+
+  const handleRestore = () => {
+    setIsMinimized(false)
+  }
+
   const handleDropdownQuery = (query: string) => {
+    if (isMinimized) {
+      setIsMinimized(false)
+    }
+
     if (onDropdownSelect) {
       onDropdownSelect(query)
     }
@@ -78,6 +91,10 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   }
 
   const processMessage = async (): Promise<void> => {
+    if (isMinimized) {
+      setIsMinimized(false)
+    }
+
     if (onUserInput) {
       onUserInput(content)
     }
@@ -101,19 +118,15 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       className="relative flex w-full flex-col items-center justify-center gap-2 bg-overlay-background px-4 py-4 sm:px-8 md:px-16 lg:px-[120px]"
       style={{ minHeight: currentUserMessage ? "auto" : "120px" }}
     >
-      {currentUserMessage && (
+      {currentUserMessage && !isMinimized && (
         <div className="absolute right-4 top-4 z-50 flex gap-2">
           <button
-            onClick={() => {
-              if (onClearConversation) {
-                onClearConversation()
-              }
-            }}
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-600 bg-gray-800 shadow-lg transition-colors hover:bg-gray-700"
-            title="Minimize chat"
+            onClick={handleMinimize}
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
+            title="Minimize"
           >
             <svg
-              className="h-4 w-4 text-gray-200"
+              className="h-4 w-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -132,11 +145,23 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                 onClearConversation()
               }
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-600 bg-gray-800 shadow-lg transition-colors hover:bg-red-600"
-            title="Close chat"
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
+            title="Clear"
+          >
+            <Trash2 className="h-4 w-4 text-white" />
+          </button>
+        </div>
+      )}
+
+      {currentUserMessage && isMinimized && (
+        <div className="absolute right-4 top-4 z-50 flex gap-2">
+          <button
+            onClick={handleRestore}
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
+            title="Maximize"
           >
             <svg
-              className="h-4 w-4 text-gray-200"
+              className="h-4 w-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -145,14 +170,25 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+                d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m-4 12h2a2 2 0 002-2v-2"
               />
             </svg>
+          </button>
+          <button
+            onClick={() => {
+              if (onClearConversation) {
+                onClearConversation()
+              }
+            }}
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
+            title="Clear"
+          >
+            <Trash2 className="h-4 w-4 text-white" />
           </button>
         </div>
       )}
 
-      {currentUserMessage && (
+      {currentUserMessage && !isMinimized && (
         <div className="mb-4 flex w-full max-w-[880px] flex-col gap-3">
           <UserMessage content={currentUserMessage} />
           {(isAgentLoading || agentResponse) && (
@@ -207,19 +243,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({
             className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
           >
             <img src={airplaneSvg} alt="Send" className="h-[18px] w-[18px]" />
-          </button>
-        </div>
-        <div className="flex h-11 w-[50px] flex-none flex-row items-start p-0">
-          <button
-            onClick={() => {
-              if (onClearConversation) {
-                onClearConversation()
-              }
-            }}
-            className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
-            title="Clear conversation"
-          >
-            <Trash2 className="h-[18px] w-[18px] text-white" />
           </button>
         </div>
       </div>

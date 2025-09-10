@@ -49,9 +49,23 @@ const ChatArea: React.FC<ChatAreaProps> = ({
 }) => {
   const [content, setContent] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
+  const [isMinimized, setIsMinimized] = useState<boolean>(false)
   const { sendMessageWithCallback } = useAgentAPI()
 
+  const handleMinimize = () => {
+    setIsMinimized(true)
+  }
+
+  const handleRestore = () => {
+    setIsMinimized(false)
+  }
+
   const handleDropdownQuery = (query: string) => {
+    // Auto-maximize if minimized when selecting from dropdown
+    if (isMinimized) {
+      setIsMinimized(false)
+    }
+
     if (onDropdownSelect) {
       onDropdownSelect(query)
     }
@@ -85,6 +99,10 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   }
 
   const processMessage = async (): Promise<void> => {
+    if (isMinimized) {
+      setIsMinimized(false)
+    }
+
     if (onUserInput) {
       onUserInput(content)
     }
@@ -105,23 +123,20 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   return (
     <div
       className={cn(
-        "relative flex w-[1190px] flex-col items-start justify-center gap-2 bg-overlay-background px-[120px] py-4",
+        "relative flex w-full flex-col items-center justify-center gap-2 bg-overlay-background px-4 py-4 sm:px-8 md:px-16 lg:px-[120px]",
         currentUserMessage ? "min-h-auto" : "min-h-[120px]",
       )}
+      style={{ minHeight: currentUserMessage ? "auto" : "120px" }}
     >
-      {currentUserMessage && (
-        <div className="fixed right-4 top-4 z-50 flex gap-2">
+      {currentUserMessage && !isMinimized && (
+        <div className="absolute right-4 top-4 z-50 flex gap-2">
           <button
-            onClick={() => {
-              if (onClearConversation) {
-                onClearConversation()
-              }
-            }}
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-600 bg-gray-800 shadow-lg transition-colors hover:bg-gray-700"
-            title="Minimize chat"
+            onClick={handleMinimize}
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
+            title="Minimize"
           >
             <svg
-              className="h-4 w-4 text-gray-200"
+              className="h-4 w-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -140,11 +155,23 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                 onClearConversation()
               }
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-600 bg-gray-800 shadow-lg transition-colors hover:bg-red-600"
-            title="Close chat"
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
+            title="Clear"
+          >
+            <Trash2 className="h-4 w-4 text-white" />
+          </button>
+        </div>
+      )}
+
+      {currentUserMessage && isMinimized && (
+        <div className="absolute right-4 top-4 z-50 flex gap-2">
+          <button
+            onClick={handleRestore}
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary shadow-lg transition-colors hover:bg-action-background-hover dark:bg-action-background"
+            title="Maximize"
           >
             <svg
-              className="h-4 w-4 text-gray-200"
+              className="h-4 w-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -153,18 +180,29 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+                d="M5 15l7-7 7 7"
               />
             </svg>
+          </button>
+          <button
+            onClick={() => {
+              if (onClearConversation) {
+                onClearConversation()
+              }
+            }}
+            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary shadow-lg transition-colors hover:bg-action-background-hover dark:bg-action-background"
+            title="Clear"
+          >
+            <Trash2 className="h-4 w-4 text-white" />
           </button>
         </div>
       )}
 
-      {currentUserMessage && (
-        <div className="mb-4 flex w-[880px] flex-col gap-3">
+      {currentUserMessage && !isMinimized && (
+        <div className="mb-4 flex w-full max-w-[880px] flex-col gap-3">
           <UserMessage content={currentUserMessage} />
           {(isAgentLoading || agentResponse) && (
-            <div className="flex w-[880px] flex-row items-start gap-1">
+            <div className="flex w-full flex-row items-start gap-1">
               <div className="chat-avatar-container flex h-10 w-10 flex-none items-center justify-center rounded-full bg-action-background">
                 <img
                   src={AgentIcon}
@@ -172,7 +210,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                   className="h-[22px] w-[22px]"
                 />
               </div>
-              <div className="flex w-[814px] flex-col items-start justify-center rounded p-1 px-2">
+              <div className="flex max-w-[calc(100%-3rem)] flex-1 flex-col items-start justify-center rounded p-1 px-2">
                 <div className="whitespace-pre-wrap break-words font-inter text-sm font-normal leading-5 !text-chat-text">
                   {isAgentLoading ? (
                     <div className="animate-pulse text-accent-primary">...</div>
@@ -187,13 +225,13 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       )}
 
       {showCoffeeDropdown && (
-        <div className="relative z-10 flex h-9 w-[166px] flex-row items-start gap-2 p-0">
+        <div className="relative z-10 flex h-9 w-auto w-full max-w-[880px] flex-row items-start gap-2 p-0">
           <CoffeeGraderDropdown visible={true} onSelect={handleDropdownQuery} />
         </div>
       )}
 
       {showCoffeePrompts && (
-        <div className="relative z-10 flex h-9 w-[166px] flex-row items-start gap-2 p-0">
+        <div className="relative z-10 flex h-9 w-auto w-full max-w-[880px] flex-row items-start gap-2 p-0">
           <CoffeePromptsDropdown
             visible={true}
             onSelect={handleDropdownQuery}
@@ -201,11 +239,11 @@ const ChatArea: React.FC<ChatAreaProps> = ({
         </div>
       )}
 
-      <div className="flex h-11 w-[950px] flex-row items-center gap-4 p-0">
-        <div className="box-border flex h-11 w-[814px] flex-row items-center rounded border border-node-background bg-chat-input-background px-0 py-[5px]">
-          <div className="flex h-[34px] w-[814px] flex-row items-center gap-[10px] px-4 py-[7px]">
+      <div className="flex w-full max-w-[880px] flex-col items-stretch gap-4 p-0 sm:flex-row sm:items-center">
+        <div className="box-border flex h-11 max-w-[814px] flex-1 flex-row items-center rounded border border-node-background bg-chat-input-background px-0 py-[5px]">
+          <div className="flex h-[34px] w-full flex-row items-center gap-[10px] px-4 py-[7px]">
             <input
-              className="h-5 w-[782px] border-none bg-transparent font-cisco text-[15px] font-medium leading-5 tracking-[0.005em] text-chat-text outline-none placeholder:text-chat-text placeholder:opacity-60"
+              className="h-5 min-w-0 flex-1 border-none bg-transparent font-cisco text-[15px] font-medium leading-5 tracking-[0.005em] text-chat-text outline-none placeholder:text-chat-text placeholder:opacity-60"
               placeholder="Type a prompt to interact with the agents"
               value={content}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -216,7 +254,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
             />
           </div>
         </div>
-        <div className="flex h-11 w-[50px] flex-row items-start p-0">
+        <div className="flex h-11 w-[50px] flex-none flex-row items-start p-0">
           <button
             onClick={() => {
               if (content.trim() && !loading) {
@@ -226,19 +264,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({
             className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
           >
             <img src={airplaneSvg} alt="Send" className="h-[18px] w-[18px]" />
-          </button>
-        </div>
-        <div className="flex h-11 w-[50px] flex-row items-start p-0">
-          <button
-            onClick={() => {
-              if (onClearConversation) {
-                onClearConversation()
-              }
-            }}
-            className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
-            title="Clear conversation"
-          >
-            <Trash2 className="h-[18px] w-[18px] text-white" />
           </button>
         </div>
       </div>
