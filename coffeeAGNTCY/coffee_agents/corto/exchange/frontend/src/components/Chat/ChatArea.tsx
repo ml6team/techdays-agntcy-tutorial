@@ -50,7 +50,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({
     if (onDropdownSelect) {
       onDropdownSelect(query)
     }
-    processMessageWithQuery(query)
   }
 
   const processMessageWithQuery = async (

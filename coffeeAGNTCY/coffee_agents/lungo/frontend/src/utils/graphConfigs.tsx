@@ -106,7 +106,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         label2: "Buyer",
         handles: "source",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/exchange/graph/graph.py#L50",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/supervisors/auction/graph/graph.py#L116",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/34f05b1e-3bd3-4a21-b8c5-e9f191942ed0",
       },
@@ -133,7 +133,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         farmName: FarmName?.BrazilCoffeeFarm || "Brazil Coffee Farm",
         verificationStatus: "failed",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/farms/brazil/agent.py#L30",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/farms/brazil/agent.py#L30",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/f52e742d-f9fc-41f5-a431-23ca69c4ef65",
       },
@@ -151,7 +151,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         farmName: FarmName?.ColombiaCoffeeFarm || "Colombia Coffee Farm",
         verificationStatus: "verified",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/farms/colombia/agent.py#L54",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/farms/colombia/agent.py#L53",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/1991a0f9-a24d-4197-902a-3de0a0c5920a",
       },
@@ -168,7 +168,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         farmName: FarmName?.VietnamCoffeeFarm || "Vietnam Coffee Farm",
         verificationStatus: "verified",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/farms/vietnam/agent.py#L30",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/farms/vietnam/agent.py#L29",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/6907d9f6-6fea-4e2c-93d6-ab7914204a6f",
       },
@@ -183,7 +183,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         label2: "Weather",
         handles: "target",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/mcp_servers/weather_service.py#L25",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/mcp_servers/weather_service.py",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/8d720b8c-59a7-4ea4-9254-68c764e1f9b1",
       },
@@ -272,9 +272,9 @@ export const updateTransportLabels = async (
                 label: `Transport: ${transport}`,
                 githubLink:
                   transport === "SLIM"
-                    ? "https://github.com/agntcy/app-sdk/blob/main/src/agntcy_app_sdk/transports/slim/transport.py#L23"
+                    ? "https://github.com/agntcy/app-sdk/blob/main/src/agntcy_app_sdk/transports/slim/transport.py#L29"
                     : transport === "NATS"
-                      ? "https://github.com/agntcy/app-sdk/blob/main/src/agntcy_app_sdk/transports/nats/transport.py#L21"
+                      ? "https://github.com/agntcy/app-sdk/blob/main/src/agntcy_app_sdk/transports/nats/transport.py#L27"
                       : "https://github.com/agntcy/app-sdk/tree/main/src/agntcy_app_sdk/transports",
               },
             }
