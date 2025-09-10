@@ -4,7 +4,6 @@
  **/
 
 import React, { useState, useEffect } from "react"
-import { v4 as uuid } from "uuid"
 import { LOCAL_STORAGE_KEY } from "@/components/Chat/Messages"
 import { logger } from "@/utils/logger"
 
@@ -35,21 +34,14 @@ const App: React.FC = () => {
   const [isAgentLoading, setIsAgentLoading] = useState<boolean>(false)
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY)
-    return saved
-      ? JSON.parse(saved)
-      : [
-          {
-            role: "assistant",
-            content: "Hi! Select a pattern to get started.",
-            id: uuid(),
-            animate: false,
-          },
-        ]
+    return saved ? JSON.parse(saved) : []
   })
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
   }, [messages])
+
+  const chatHeight = currentUserMessage || agentResponse ? 250 : 76 // Estimate: expanded vs minimal
 
   const handleCoffeeGraderSelect = (query: string) => {
     handleDropdownSelect(query)
@@ -91,6 +83,15 @@ const App: React.FC = () => {
     }
   }
 
+  const handleClearConversation = () => {
+    setMessages([])
+    setCurrentUserMessage("")
+    setAgentResponse("")
+    setIsAgentLoading(false)
+    setButtonClicked(false)
+    setAiReplied(false)
+  }
+
   return (
     <ThemeProvider>
       <div className="bg-primary-bg flex h-screen w-screen flex-col overflow-hidden">
@@ -110,6 +111,7 @@ const App: React.FC = () => {
                 setButtonClicked={setButtonClicked}
                 aiReplied={aiReplied}
                 setAiReplied={setAiReplied}
+                chatContentHeight={chatHeight}
               />
             </div>
 
@@ -127,6 +129,7 @@ const App: React.FC = () => {
                 onDropdownSelect={handleDropdownSelect}
                 onUserInput={handleUserInput}
                 onApiResponse={handleApiResponse}
+                onClearConversation={handleClearConversation}
                 currentUserMessage={currentUserMessage}
                 agentResponse={agentResponse}
                 isAgentLoading={isAgentLoading}

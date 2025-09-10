@@ -23,20 +23,15 @@ const App: React.FC = () => {
   const [currentUserMessage, setCurrentUserMessage] = useState<string>("")
   const [agentResponse, setAgentResponse] = useState<string>("")
   const [isAgentLoading, setIsAgentLoading] = useState<boolean>(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: "Hi! How can I assist you?",
-      id: uuid(),
-      animate: false,
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
 
   const { sendMessage } = useAgentAPI()
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
   }, [messages])
+
+  const chatHeight = currentUserMessage || agentResponse ? 250 : 76
 
   const handleApiResponse = (response: string, isError: boolean = false) => {
     setAgentResponse(response)
@@ -73,6 +68,15 @@ const App: React.FC = () => {
     }
   }
 
+  const handleClearConversation = () => {
+    setMessages([])
+    setCurrentUserMessage("")
+    setAgentResponse("")
+    setIsAgentLoading(false)
+    setButtonClicked(false)
+    setAiReplied(false)
+  }
+
   return (
     <ThemeProvider>
       <div className="flex h-screen w-screen flex-col overflow-hidden bg-app-background">
@@ -88,6 +92,7 @@ const App: React.FC = () => {
                 setButtonClicked={setButtonClicked}
                 aiReplied={aiReplied}
                 setAiReplied={setAiReplied}
+                chatContentHeight={chatHeight}
               />
             </div>
 
@@ -102,6 +107,7 @@ const App: React.FC = () => {
                 onDropdownSelect={handleDropdownSelect}
                 onUserInput={handleUserInput}
                 onApiResponse={handleApiResponse}
+                onClearConversation={handleClearConversation}
                 currentUserMessage={currentUserMessage}
                 agentResponse={agentResponse}
                 isAgentLoading={isAgentLoading}

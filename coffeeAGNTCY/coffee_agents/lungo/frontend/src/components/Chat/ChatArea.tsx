@@ -4,6 +4,7 @@
  **/
 
 import React, { useState } from "react"
+import { Trash2 } from "lucide-react"
 import { Message } from "@/types/message"
 import CoffeeGraderDropdown from "./Prompts/CoffeeGraderDropdown"
 import airplaneSvg from "@/assets/airplane.svg"
@@ -25,6 +26,7 @@ interface ChatAreaProps {
   onDropdownSelect?: (query: string) => void
   onUserInput?: (query: string) => void
   onApiResponse?: (response: string, isError?: boolean) => void
+  onClearConversation?: () => void
   currentUserMessage?: string
   agentResponse?: string
   isAgentLoading?: boolean
@@ -40,6 +42,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   onDropdownSelect,
   onUserInput,
   onApiResponse,
+  onClearConversation,
   currentUserMessage,
   agentResponse,
   isAgentLoading,
@@ -103,10 +106,61 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   return (
     <div
       className={cn(
-        "flex w-[1120px] flex-col items-start justify-center gap-2 bg-overlay-background px-[120px] py-4",
+        "relative flex w-[1190px] flex-col items-start justify-center gap-2 bg-overlay-background px-[120px] py-4",
         currentUserMessage ? "min-h-auto" : "min-h-[120px]",
       )}
     >
+      {currentUserMessage && (
+        <div className="fixed right-4 top-4 z-50 flex gap-2">
+          <button
+            onClick={() => {
+              if (onClearConversation) {
+                onClearConversation()
+              }
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-600 bg-gray-800 shadow-lg transition-colors hover:bg-gray-700"
+            title="Minimize chat"
+          >
+            <svg
+              className="h-4 w-4 text-gray-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 12H4"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              if (onClearConversation) {
+                onClearConversation()
+              }
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-600 bg-gray-800 shadow-lg transition-colors hover:bg-red-600"
+            title="Close chat"
+          >
+            <svg
+              className="h-4 w-4 text-gray-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {currentUserMessage && (
         <div className="mb-4 flex w-[880px] flex-col gap-3">
           <UserMessage content={currentUserMessage} />
@@ -148,7 +202,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
         </div>
       )}
 
-      <div className="flex h-11 w-[880px] flex-row items-center gap-4 p-0">
+      <div className="flex h-11 w-[950px] flex-row items-center gap-4 p-0">
         <div className="box-border flex h-11 w-[814px] flex-row items-center rounded border border-node-background bg-chat-input-background px-0 py-[5px]">
           <div className="flex h-[34px] w-[814px] flex-row items-center gap-[10px] px-4 py-[7px]">
             <input
@@ -173,6 +227,19 @@ const ChatArea: React.FC<ChatAreaProps> = ({
             className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
           >
             <img src={airplaneSvg} alt="Send" className="h-[18px] w-[18px]" />
+          </button>
+        </div>
+        <div className="flex h-11 w-[50px] flex-row items-start p-0">
+          <button
+            onClick={() => {
+              if (onClearConversation) {
+                onClearConversation()
+              }
+            }}
+            className="flex h-11 w-[50px] cursor-pointer flex-row items-center justify-center gap-[10px] rounded-md border-none bg-gradient-to-r from-[#834DD7] via-[#7670D5] to-[#58C0D0] px-4 py-[15px]"
+            title="Clear conversation"
+          >
+            <Trash2 className="h-[18px] w-[18px] text-white" />
           </button>
         </div>
       </div>

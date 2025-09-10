@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **/
 
-import React, { useEffect, useRef, useCallback } from "react"
+import React, { useEffect, useRef, useCallback, useState } from "react"
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -45,6 +45,7 @@ interface MainAreaProps {
   setButtonClicked: (clicked: boolean) => void
   aiReplied: boolean
   setAiReplied: (replied: boolean) => void
+  chatContentHeight?: number
 }
 
 const DELAY_DURATION = 500
@@ -59,10 +60,15 @@ const MainArea: React.FC<MainAreaProps> = ({
   setButtonClicked,
   aiReplied,
   setAiReplied,
+  chatContentHeight = 0,
 }) => {
   const { fitView } = useReactFlow()
 
   const config: GraphConfig = getGraphConfig(pattern)
+
+  const [nodesDraggable, setNodesDraggable] = useState(true)
+  const [nodesConnectable, setNodesConnectable] = useState(true)
+
   const [nodes, setNodes, onNodesChange] = useNodesState(config.nodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(config.edges)
   const animationLock = useRef<boolean>(false)
@@ -83,6 +89,44 @@ const MainArea: React.FC<MainAreaProps> = ({
       })
     }, 100)
   }, [pattern, setNodes, setEdges, fitView])
+
+  useEffect(() => {
+    if (chatContentHeight > 76) {
+      setTimeout(() => {
+        fitView({
+          padding: 0.45,
+          duration: 300,
+          minZoom: 0.5,
+          maxZoom: 1.1,
+        })
+      }, 100)
+    }
+  }, [chatContentHeight, fitView])
+
+  useEffect(() => {
+    const addTooltips = () => {
+      const controlButtons = document.querySelectorAll(
+        ".react-flow__controls-button",
+      )
+      const tooltips = ["Zoom In", "Zoom Out", "Fit View", "Lock"]
+
+      controlButtons.forEach((button, index) => {
+        if (index < tooltips.length) {
+          if (index === 3) {
+            const isLocked = !nodesDraggable || !nodesConnectable
+            button.setAttribute("data-tooltip", isLocked ? "Unlock" : "Lock")
+          } else {
+            button.setAttribute("data-tooltip", tooltips[index])
+          }
+          button.removeAttribute("title")
+        }
+      })
+    }
+
+    const timeoutId = setTimeout(addTooltips, 100)
+
+    return () => clearTimeout(timeoutId)
+  }, [pattern, nodesDraggable, nodesConnectable])
 
   const delay = (ms: number): Promise<void> =>
     new Promise((resolve) => setTimeout(resolve, ms))
@@ -159,8 +203,16 @@ const MainArea: React.FC<MainAreaProps> = ({
         defaultViewport={{ x: 0, y: 0, zoom: 0.75 }}
         minZoom={0.15}
         maxZoom={1.8}
+        nodesDraggable={nodesDraggable}
+        nodesConnectable={nodesConnectable}
+        elementsSelectable={nodesDraggable}
       >
-        <Controls />
+        <Controls
+          onInteractiveChange={(interactiveEnabled) => {
+            setNodesDraggable(interactiveEnabled)
+            setNodesConnectable(interactiveEnabled)
+          }}
+        />
       </ReactFlow>
     </div>
   )
