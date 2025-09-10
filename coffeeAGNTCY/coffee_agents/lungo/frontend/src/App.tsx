@@ -115,7 +115,7 @@ const App: React.FC = () => {
               />
             </div>
 
-            <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0">
+            <div className="flex min-h-[76px] w-full flex-none flex-col items-center justify-center gap-0 bg-overlay-background p-0 md:min-h-[96px]">
               <ChatArea
                 setMessages={setMessages}
                 setButtonClicked={setButtonClicked}
