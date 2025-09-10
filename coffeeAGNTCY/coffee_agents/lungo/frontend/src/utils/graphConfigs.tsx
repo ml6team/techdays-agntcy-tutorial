@@ -106,7 +106,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         label2: "Buyer",
         handles: "source",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/4afd2f8d0f5e41212263d27bb6f8a0147a1f1187/coffeeAGNTCY/coffee_agents/lungo/agents/supervisors/auction/graph/graph.py#L116",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/supervisors/auction/graph/graph.py#L116",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/34f05b1e-3bd3-4a21-b8c5-e9f191942ed0",
       },
@@ -183,7 +183,7 @@ const PUBLISH_SUBSCRIBE_CONFIG: GraphConfig = {
         label2: "Weather",
         handles: "target",
         githubLink:
-          "https://github.com/agntcy/coffeeAgntcy/blob/4afd2f8d0f5e41212263d27bb6f8a0147a1f1187/coffeeAGNTCY/coffee_agents/lungo/agents/mcp_servers/weather_service.py",
+          "https://github.com/agntcy/coffeeAgntcy/blob/main/coffeeAGNTCY/coffee_agents/lungo/agents/mcp_servers/weather_service.py",
         agentDirectoryLink:
           "https://agent-directory.outshift.com/explore/8d720b8c-59a7-4ea4-9254-68c764e1f9b1",
       },
