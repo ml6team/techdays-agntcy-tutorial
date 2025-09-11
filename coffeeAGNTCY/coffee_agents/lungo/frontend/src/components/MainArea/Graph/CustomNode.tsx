@@ -88,7 +88,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
             className="no-underline"
           >
             <div
-              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-solid bg-action-background p-1 opacity-100 shadow-sm transition-opacity duration-200 ease-in-out"
+              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-solid bg-sidebar-background p-1 opacity-100 shadow-sm transition-opacity duration-200 ease-in-out"
               style={{ borderColor: "var(--node-icon-border)" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = "0.8"
@@ -109,7 +109,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ data }) => {
             className="no-underline"
           >
             <div
-              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-solid bg-action-background p-1 opacity-100 shadow-sm"
+              className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-solid bg-sidebar-background p-1 opacity-100 shadow-sm"
               style={{ borderColor: "var(--node-icon-border)" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = "0.8"

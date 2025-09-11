@@ -129,78 +129,14 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       style={{ minHeight: currentUserMessage ? "auto" : "120px" }}
     >
       {currentUserMessage && !isMinimized && (
-        <div className="absolute right-4 top-4 z-50 flex gap-2">
-          <button
-            onClick={handleMinimize}
-            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
-            title="Minimize"
-          >
-            <svg
-              className="h-4 w-4 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M20 12H4"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={() => {
-              if (onClearConversation) {
-                onClearConversation()
-              }
-            }}
-            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-action-background shadow-lg transition-colors hover:bg-action-background-hover"
-            title="Clear"
-          >
-            <Trash2 className="h-4 w-4 text-white" />
-          </button>
-        </div>
-      )}
-
-      {currentUserMessage && isMinimized && (
-        <div className="absolute right-4 top-4 z-50 flex gap-2">
-          <button
-            onClick={handleRestore}
-            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary shadow-lg transition-colors hover:bg-action-background-hover dark:bg-action-background"
-            title="Maximize"
-          >
-            <svg
-              className="h-4 w-4 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 15l7-7 7 7"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={() => {
-              if (onClearConversation) {
-                onClearConversation()
-              }
-            }}
-            className="chat-avatar-container flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary shadow-lg transition-colors hover:bg-action-background-hover dark:bg-action-background"
-            title="Clear"
-          >
-            <Trash2 className="h-4 w-4 text-white" />
-          </button>
-        </div>
-      )}
-
-      {currentUserMessage && !isMinimized && (
         <div className="mb-4 flex w-full max-w-[880px] flex-col gap-3">
-          <UserMessage content={currentUserMessage} />
+          <UserMessage
+            content={currentUserMessage}
+            onMinimize={handleMinimize}
+            onClearConversation={onClearConversation}
+            isMinimized={isMinimized}
+            showActions={!!agentResponse && !isAgentLoading}
+          />
           {(isAgentLoading || agentResponse) && (
             <div className="flex w-full flex-row items-start gap-1">
               <div className="chat-avatar-container flex h-10 w-10 flex-none items-center justify-center rounded-full bg-action-background">
@@ -221,6 +157,43 @@ const ChatArea: React.FC<ChatAreaProps> = ({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {currentUserMessage && isMinimized && (
+        <div className="mb-4 flex w-full max-w-[880px] justify-end">
+          <div className="flex gap-2">
+            <button
+              onClick={handleRestore}
+              className="chat-avatar-container flex h-6 w-6 items-center justify-center rounded-full bg-action-background shadow-sm transition-colors hover:bg-action-background-hover"
+              title="Maximize"
+            >
+              <svg
+                className="h-3 w-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m-4 12h2a2 2 0 002-2v-2"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => {
+                if (onClearConversation) {
+                  onClearConversation()
+                }
+              }}
+              className="chat-avatar-container flex h-6 w-6 items-center justify-center rounded-full bg-action-background shadow-sm transition-colors hover:bg-action-background-hover"
+              title="Clear conversation"
+            >
+              <Trash2 className="h-3 w-3 text-white" />
+            </button>
+          </div>
         </div>
       )}
 

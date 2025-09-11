@@ -120,8 +120,8 @@ const ChatArea: React.FC<ChatAreaProps> = ({
     >
       {currentUserMessage && !isMinimized && (
         <div className="mb-4 flex w-full max-w-[880px] flex-col gap-3">
-          <UserMessage 
-            content={currentUserMessage} 
+          <UserMessage
+            content={currentUserMessage}
             onMinimize={handleMinimize}
             onClearConversation={onClearConversation}
             isMinimized={isMinimized}
