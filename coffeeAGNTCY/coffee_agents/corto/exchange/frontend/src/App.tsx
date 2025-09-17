@@ -4,7 +4,6 @@
  **/
 
 import React, { useState, useEffect } from "react"
-import { v4 as uuid } from "uuid"
 import { LOCAL_STORAGE_KEY } from "@/components/Chat/Messages"
 
 import ChatArea from "@/components/Chat/ChatArea"
@@ -15,6 +14,7 @@ import Sidebar from "@/components/Sidebar/Sidebar"
 import { ThemeProvider } from "@/contexts/ThemeContext"
 import { Message } from "./types/Message"
 import { useAgentAPI } from "@/hooks/useAgentAPI"
+import { useChatAreaMeasurement } from "@/hooks/useChatAreaMeasurement"
 import { logger } from "./utils/logger"
 
 const App: React.FC = () => {
@@ -24,14 +24,28 @@ const App: React.FC = () => {
   const [agentResponse, setAgentResponse] = useState<string>("")
   const [isAgentLoading, setIsAgentLoading] = useState<boolean>(false)
   const [messages, setMessages] = useState<Message[]>([])
+  const { sendMessageWithCallback } = useAgentAPI()
 
-  const { sendMessage } = useAgentAPI()
+  const {
+    height: chatHeight,
+    isExpanded,
+    chatRef,
+  } = useChatAreaMeasurement({
+    debounceMs: 100,
+  })
+
+  useEffect(() => {
+    const storedMessages = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages))
+    }
+  }, [])
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
   }, [messages])
 
-  const chatHeight = currentUserMessage || agentResponse ? 250 : 76
+  const chatHeightValue = currentUserMessage || agentResponse ? chatHeight : 76
 
   const handleApiResponse = (response: string, isError: boolean = false) => {
     setAgentResponse(response)
@@ -58,11 +72,24 @@ const App: React.FC = () => {
     setIsAgentLoading(true)
 
     try {
-      const response = await sendMessage(query)
-      handleApiResponse(response, false)
+      await sendMessageWithCallback(query, setMessages, {
+        onStart: () => {
+          setButtonClicked(true)
+        },
+        onSuccess: (response) => {
+          setAiReplied(true)
+          handleApiResponse(response, false)
+        },
+        onError: (error) => {
+          if (import.meta.env.DEV) {
+            logger.apiError("/agent/prompt", error)
+          }
+          handleApiResponse("Sorry, I encountered an error.", true)
+        },
+      })
     } catch (error) {
       if (import.meta.env.DEV) {
-        logger.apiError("/api/ask", error)
+        logger.apiError("/agent/prompt", error)
       }
       handleApiResponse("Sorry, I encountered an error.", true)
     }
@@ -92,7 +119,8 @@ const App: React.FC = () => {
                 setButtonClicked={setButtonClicked}
                 aiReplied={aiReplied}
                 setAiReplied={setAiReplied}
-                chatContentHeight={chatHeight}
+                chatHeight={chatHeightValue}
+                isExpanded={isExpanded}
               />
             </div>
 
@@ -111,6 +139,7 @@ const App: React.FC = () => {
                 currentUserMessage={currentUserMessage}
                 agentResponse={agentResponse}
                 isAgentLoading={isAgentLoading}
+                chatRef={chatRef}
               />
             </div>
           </div>

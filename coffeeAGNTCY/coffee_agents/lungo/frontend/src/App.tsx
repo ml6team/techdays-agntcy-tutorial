@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react"
 import { LOCAL_STORAGE_KEY } from "@/components/Chat/Messages"
 import { logger } from "@/utils/logger"
+import { useChatAreaMeasurement } from "@/hooks/useChatAreaMeasurement"
 
 import Navigation from "@/components/Navigation/Navigation"
 import MainArea from "@/components/MainArea/MainArea"
@@ -41,7 +42,15 @@ const App: React.FC = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
   }, [messages])
 
-  const chatHeight = currentUserMessage || agentResponse ? 250 : 76 // Estimate: expanded vs minimal
+  const {
+    height: chatHeight,
+    isExpanded,
+    chatRef,
+  } = useChatAreaMeasurement({
+    debounceMs: 100,
+  })
+
+  const chatHeightValue = currentUserMessage || agentResponse ? chatHeight : 76
 
   const handleCoffeeGraderSelect = (query: string) => {
     handleDropdownSelect(query)
@@ -78,7 +87,7 @@ const App: React.FC = () => {
       const response = await sendMessage(query)
       handleApiResponse(response, false)
     } catch (error) {
-      logger.apiError("/api/ask", error)
+      logger.apiError("/agent/prompt", error)
       handleApiResponse("Sorry, I encountered an error.", true)
     }
   }
@@ -111,7 +120,8 @@ const App: React.FC = () => {
                 setButtonClicked={setButtonClicked}
                 aiReplied={aiReplied}
                 setAiReplied={setAiReplied}
-                chatContentHeight={chatHeight}
+                chatHeight={chatHeightValue}
+                isExpanded={isExpanded}
               />
             </div>
 
@@ -133,6 +143,7 @@ const App: React.FC = () => {
                 currentUserMessage={currentUserMessage}
                 agentResponse={agentResponse}
                 isAgentLoading={isAgentLoading}
+                chatRef={chatRef}
               />
             </div>
           </div>

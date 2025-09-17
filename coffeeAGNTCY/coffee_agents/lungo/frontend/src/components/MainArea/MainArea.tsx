@@ -9,7 +9,6 @@ import {
   ReactFlowProvider,
   useNodesState,
   useEdgesState,
-  useReactFlow,
   Controls,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
@@ -23,6 +22,7 @@ import {
   updateTransportLabels,
   GraphConfig,
 } from "@/utils/graphConfigs"
+import { useViewportAwareFitView } from "@/hooks/useViewportAwareFitView"
 
 const proOptions = { hideAttribution: true }
 
@@ -45,7 +45,8 @@ interface MainAreaProps {
   setButtonClicked: (clicked: boolean) => void
   aiReplied: boolean
   setAiReplied: (replied: boolean) => void
-  chatContentHeight?: number
+  chatHeight?: number
+  isExpanded?: boolean
 }
 
 const DELAY_DURATION = 500
@@ -60,9 +61,10 @@ const MainArea: React.FC<MainAreaProps> = ({
   setButtonClicked,
   aiReplied,
   setAiReplied,
-  chatContentHeight = 0,
+  chatHeight = 0,
+  isExpanded = false,
 }) => {
-  const { fitView } = useReactFlow()
+  const fitViewWithViewport = useViewportAwareFitView()
 
   const config: GraphConfig = getGraphConfig(pattern)
 
@@ -81,27 +83,19 @@ const MainArea: React.FC<MainAreaProps> = ({
     setEdges(newConfig.edges)
 
     setTimeout(() => {
-      fitView({
-        padding: 0.45,
-        duration: 300,
-        minZoom: 0.5,
-        maxZoom: 1.1,
+      fitViewWithViewport({
+        chatHeight,
+        isExpanded,
       })
     }, 100)
-  }, [pattern, setNodes, setEdges, fitView])
+  }, [pattern, setNodes, setEdges, fitViewWithViewport, chatHeight, isExpanded])
 
   useEffect(() => {
-    if (chatContentHeight > 76) {
-      setTimeout(() => {
-        fitView({
-          padding: 0.45,
-          duration: 300,
-          minZoom: 0.5,
-          maxZoom: 1.1,
-        })
-      }, 100)
-    }
-  }, [chatContentHeight, fitView])
+    fitViewWithViewport({
+      chatHeight,
+      isExpanded,
+    })
+  }, [chatHeight, isExpanded, fitViewWithViewport])
 
   useEffect(() => {
     const addTooltips = () => {

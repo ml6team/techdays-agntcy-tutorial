@@ -9,7 +9,6 @@ import {
   ReactFlowProvider,
   useNodesState,
   useEdgesState,
-  useReactFlow,
   Controls,
   Node,
   Edge,
@@ -20,6 +19,7 @@ import SlimNode from "./Graph/TransportNode"
 import CustomEdge from "./Graph/CustomEdge"
 import CustomNode from "./Graph/CustomNode"
 import { graphConfig, updateA2ALabels } from "@/utils/graphConfigs"
+import { useViewportAwareFitView } from "@/hooks/useViewportAwareFitView"
 
 const proOptions = { hideAttribution: true }
 
@@ -47,7 +47,8 @@ interface MainAreaProps {
   setButtonClicked: (clicked: boolean) => void
   aiReplied: boolean
   setAiReplied: (replied: boolean) => void
-  chatContentHeight?: number
+  chatHeight?: number
+  isExpanded?: boolean
 }
 
 const DELAY_DURATION = 500
@@ -61,10 +62,11 @@ const MainArea: React.FC<MainAreaProps> = ({
   setButtonClicked,
   aiReplied,
   setAiReplied,
-  chatContentHeight = 0,
+  chatHeight = 0,
+  isExpanded = false,
 }) => {
   const config: GraphConfig = graphConfig
-  const { fitView } = useReactFlow()
+  const fitViewWithViewport = useViewportAwareFitView()
 
   const [nodesDraggable, setNodesDraggable] = useState(true)
   const [nodesConnectable, setNodesConnectable] = useState(true)
@@ -81,27 +83,20 @@ const MainArea: React.FC<MainAreaProps> = ({
     setEdges(newConfig.edges)
 
     setTimeout(() => {
-      fitView({
-        padding: 0.45,
-        duration: 300,
-        minZoom: 0.5,
-        maxZoom: 1.1,
+      fitViewWithViewport({
+        chatHeight,
+        isExpanded,
       })
     }, 100)
-  }, [setNodes, setEdges, fitView])
+  }, [setNodes, setEdges, fitViewWithViewport, chatHeight, isExpanded])
 
   useEffect(() => {
-    if (chatContentHeight > 76) {
-      setTimeout(() => {
-        fitView({
-          padding: 0.45,
-          duration: 300,
-          minZoom: 0.5,
-          maxZoom: 1.1,
-        })
-      }, 100)
-    }
-  }, [chatContentHeight, fitView])
+    // Trigger fitView whenever chat height or expansion state changes
+    fitViewWithViewport({
+      chatHeight,
+      isExpanded,
+    })
+  }, [chatHeight, isExpanded, fitViewWithViewport])
 
   useEffect(() => {
     const addTooltips = () => {

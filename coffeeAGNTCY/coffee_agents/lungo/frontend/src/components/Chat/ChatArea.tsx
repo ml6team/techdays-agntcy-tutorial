@@ -30,6 +30,7 @@ interface ChatAreaProps {
   currentUserMessage?: string
   agentResponse?: string
   isAgentLoading?: boolean
+  chatRef?: React.RefObject<HTMLDivElement | null>
 }
 
 const ChatArea: React.FC<ChatAreaProps> = ({
@@ -46,6 +47,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   currentUserMessage,
   agentResponse,
   isAgentLoading,
+  chatRef,
 }) => {
   const [content, setContent] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
@@ -87,7 +89,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
         }
       },
       onError: (error) => {
-        logger.apiError("/api/ask", error)
+        logger.apiError("/agent/prompt", error)
         if (onApiResponse) {
           onApiResponse("Sorry, I encountered an error.", true)
         }
@@ -120,7 +122,11 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   }
 
   return (
-    <div className="relative flex w-full flex-col" style={{ backgroundColor: 'var(--overlay-background)' }}>
+    <div
+      ref={chatRef}
+      className="relative flex w-full flex-col"
+      style={{ backgroundColor: "var(--overlay-background)" }}
+    >
       {currentUserMessage && (
         <ChatHeader
           onMinimize={isMinimized ? handleRestore : handleMinimize}
@@ -133,7 +139,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       <div
         className={cn(
           "flex w-full flex-col items-center justify-center gap-2 px-4 sm:px-8 md:px-16 lg:px-[120px]",
-          currentUserMessage ? "py-2 min-h-auto" : "py-4 min-h-[120px]",
+          currentUserMessage ? "min-h-auto py-2" : "min-h-[120px] py-4",
         )}
         style={{ minHeight: currentUserMessage ? "auto" : "120px" }}
       >
