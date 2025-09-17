@@ -114,7 +114,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
   }
 
   return (
-    <div className="relative flex w-full flex-col bg-overlay-background">
+    <div className="relative flex w-full flex-col" style={{ backgroundColor: 'var(--overlay-background)' }}>
       {currentUserMessage && (
         <ChatHeader
           onMinimize={isMinimized ? handleRestore : handleMinimize}
@@ -125,7 +125,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
       )}
 
       <div
-        className="flex w-full flex-col items-center justify-center gap-2 px-4 py-4 sm:px-8 md:px-16 lg:px-[120px]"
+        className={`flex w-full flex-col items-center justify-center gap-2 px-4 ${currentUserMessage ? 'py-2' : 'py-4'} sm:px-8 md:px-16 lg:px-[120px]`}
         style={{ minHeight: currentUserMessage ? "auto" : "120px" }}
       >
         {currentUserMessage && !isMinimized && (
