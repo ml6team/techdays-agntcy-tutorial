@@ -58,6 +58,9 @@
     --sidebar-border: #00142b;
     --sidebar-text: #fbfcfe;
 
+    --custom-node-background: #00142b;
+    --custom-node-border: transparent;
+
     --github-icon: url("@/assets/Github.png");
     --agent-directory-icon: url("@/assets/Agent_directory.png");
 
@@ -140,6 +143,9 @@
     --sidebar-item-selected: #dee6f9;
     --sidebar-border: #fbfcfe;
     --sidebar-text: #00142b;
+
+    --custom-node-background: #fbfcfe;
+    --custom-node-border: #187adc;
 
     --github-icon: url("@/assets/Github_lightmode.png");
     --agent-directory-icon: url("@/assets/Agent_Icon_light.png");
