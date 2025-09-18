@@ -26,16 +26,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   return (
     <div
-      className="flex w-full items-center justify-between px-2 py-2 sm:px-4 md:px-8 lg:px-4"
+      className="flex w-full items-center justify-end px-2 py-2 sm:px-4 md:px-8 lg:px-4"
       style={{ borderBottom: "1px solid var(--control-border-weak)" }}
     >
-      <span
-        className="chat-header-text font-inter text-sm font-bold leading-5 tracking-[0.25px]"
-        style={{ color: "var(--sidebar-text)" }}
-      >
-        Chat
-      </span>
-
       <div className="flex items-center gap-2">
         {onMinimize && (
           <div className="flex h-7 w-7 items-center justify-center rounded-lg p-1">
