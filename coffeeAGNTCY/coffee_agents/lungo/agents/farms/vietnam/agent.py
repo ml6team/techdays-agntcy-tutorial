@@ -10,6 +10,7 @@ from common.llm import get_llm
 from ioa_observe.sdk.decorators import agent, graph
 from agntcy_app_sdk.factory import AgntcyFactory
 from config.config import DEFAULT_MESSAGE_TRANSPORT, TRANSPORT_SERVER_ENDPOINT
+from langchain_core.messages import AIMessage
 
 
 logger = logging.getLogger("lungo.vietnam_farm_agent.agent")
@@ -89,23 +90,27 @@ class FarmAgent:
             self.inventory_llm = get_llm()
 
         user_message = state["messages"]
+        monsoon_status_line = state.get("monsoon_status") or "There are no monsoon updates."
 
         prompt = PromptTemplate(
-            template="""You are a helpful coffee farm cultivation manager in Vietnam who handles yield or inventory requets. 
-            Your job is to:
-            1. Return a random yield estimate for the coffee farm in Vietnam. Make sure the estimate is a reasonable value and in pounds.
-            2. Respond with only the yield estimate.\n
+            template="""You are a helpful coffee farm cultivation manager in Vietnam who handles yield or inventory requests.
+            First output exactly this status line on its own line:
+            {monsoon_status_line}
 
-            If the user asked in lbs or pounds, respond with the estimate in pounds. If the user asked in kg or kilograms, convert the estimate to kg and respond with that value.\n
+            Then on the next line output ONLY the numeric yield estimate with units.
+            - If the user asked in lbs/pounds, use pounds. If they asked in kg/kilograms, convert to kg.
+            - If the status line indicates monsoon conditions (exact text: "There are monsoon conditions."), reduce the estimate by 30% to reflect expected impact.
+            - Do not add any extra wording beyond the two lines described.
 
             User question: {user_message}
             """,
-            input_variables=["user_message"]
+            input_variables=["user_message", "monsoon_status_line"]
         )
         chain = prompt | self.inventory_llm
 
         llm_response = chain.invoke({
             "user_message": user_message,
+            "monsoon_status_line": monsoon_status_line,
         }).content
 
         logger.info(f"Inventory response generated: {llm_response}")
@@ -168,7 +173,7 @@ class FarmAgent:
         workflow.add_node(NodeStates.INVENTORY, self._inventory_node)
         workflow.add_node(NodeStates.ORDERS, self._orders_node)
         workflow.add_node(NodeStates.GENERAL_RESPONSE, self._general_response_node)
-
+        workflow.add_node(NodeStates.MONSOON_CHECK, self._monsoon_check_node)
 
 
         # Set the entry point
@@ -179,6 +184,7 @@ class FarmAgent:
             NodeStates.SUPERVISOR,
             lambda state: state["next_node"],
             {
+                NodeStates.MONSOON_CHECK: NodeStates.MONSOON_CHECK,
                 NodeStates.INVENTORY: NodeStates.INVENTORY,
                 NodeStates.ORDERS: NodeStates.ORDERS,
                 NodeStates.GENERAL_RESPONSE: NodeStates.GENERAL_RESPONSE,
@@ -186,6 +192,7 @@ class FarmAgent:
         )
 
         # Add edges from the specific nodes to END
+        workflow.add_edge(NodeStates.MONSOON_CHECK, NodeStates.INVENTORY)
         workflow.add_edge(NodeStates.INVENTORY, END)
         workflow.add_edge(NodeStates.ORDERS, END)
         workflow.add_edge(NodeStates.GENERAL_RESPONSE, END)
@@ -225,13 +232,53 @@ class FarmAgent:
         Calls the MCP server to check for monsoon conditions in Vietnam.
         """
         # Initialize AGNTCY factory
-        ## YOUR CODE HERE
+        factory = AgntcyFactory("lungo_vietnam_farm", enable_tracing=True)
 
         # Create transport for MCP communication
-        ## YOUR CODE HERE
+        transport_instance = factory.create_transport(
+            DEFAULT_MESSAGE_TRANSPORT,
+            endpoint=TRANSPORT_SERVER_ENDPOINT,
+            name="default/default/mcp_client"
+        )
 
         # Create MCP client connected to the weather server
-        ## YOUR CODE HERE
+        mcp_client = factory.create_client(
+            "MCP",
+            agent_topic="lungo_weather_service",  # MCP server topic
+            transport=transport_instance,
+        )
 
-        pass
+        try:
+            async with mcp_client as client:
+                logger.info("MCP monsoon check: calling get_monsoon_status for 'Vietnam Highlands'")
+                # Call the MCP tool for monsoon status
+                result = await client.call_tool(
+                    name="get_monsoon_status",
+                    arguments={"location": "Vietnam Highlands"},
+                )
 
+                # Handle streamed or normal response
+                monsoon_message = ""
+                if hasattr(result, "__aiter__"):  # streaming response
+                    async for chunk in result:
+                        delta = chunk.choices[0].delta
+                        monsoon_message += delta.content or ""
+                else:
+                    content_list = getattr(result, "content", [])
+                    if isinstance(content_list, list) and len(content_list) > 0:
+                        monsoon_message = content_list
+0                # Derive concise status line for downstream prompt
+wind_speed} m/s")
+                else:
+                    logger.info("Wind speed not found in MCP response.")
+
+# Derive concise status line for downstream prompt                status_line: str | None = None
+                lower = (monsoon_message or "").lower()
+                if ("monsoon" in lower) and ("detected" in lower or "🌧️" in lower):
+                    status_line = "There are monsoon conditions."
+
+                return {"messages": [AIMessage(monsoon_message)], "monsoon_status": status_line}
+
+        except Exception as e:
+            logger.error(f"MCP monsoon check error: {e}")
+            return {"messages": [AIMessage(f"Error retrieving monsoon data: {str(e)}")]}

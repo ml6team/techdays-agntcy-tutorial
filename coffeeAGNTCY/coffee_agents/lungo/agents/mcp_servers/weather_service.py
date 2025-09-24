@@ -85,13 +85,30 @@ async def get_forecast(location: str) -> str:
 
 @mcp.tool()
 async def get_monsoon_status(location: str) -> str:
-    """Check wind speed to detect monsoon conditions using Open-Meteo."""
-    # 1. Retrieve weather forecast (see get_forecast for example)
-    # 2. If wind speed > 8 m/s, consider it monsoon season
-    # 3. Return a descriptive message with wind speed
-    # 4. Handle errors gracefully
+    """Check wind speed to detect monsoon conditions using Open-Meteo.
+        We consider that there is a monsoon if the wind speed is greater than 8 (m/s)."""
 
-    pass
+    lat, lon = await geocode_location(location)
+    if lat is None or lon is None:
+        return f"Could not find coordinates for {location}"
+
+    # Get current weather
+    params = {"latitude": lat, "longitude": lon, "current_weather": "true"}
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(OPEN_METEO_BASE, params=params)
+        data = resp.json()
+
+    if "current_weather" not in data:
+        return f"No weather data available for {location}"
+
+    cw = data["current_weather"]
+    wind_speed = cw.get("windspeed", 0)
+
+    # Simple monsoon check
+    if wind_speed >= 8:  # threshold for monsoon-like conditions
+        return f"🌧️ Monsoon conditions detected in {location} (wind speed: {wind_speed} m/s)"
+    else:
+        return f"✅ No monsoon in {location} (wind speed: {wind_speed} m/s)"
 
 
 async def main():
