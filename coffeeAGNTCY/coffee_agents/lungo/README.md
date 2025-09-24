@@ -1,19 +1,6 @@
-Absolutely! I’ve cleaned up your Markdown, organized the titles hierarchically, fixed heading sizes, and integrated your monsoon workshop instructions seamlessly into the flow. Here’s the polished version:
-
 # CoffeeAgntcy Workshop: Multi-Agent System Integration
 
 Welcome to the **CoffeeAgntcy Workshop**! This interactive exercise will guide you through deploying and exploring a multi-agent coffee trading system and challenge you to integrate weather awareness into the Vietnam farm agent.
-
----
-
-## 🎯 Workshop Objectives
-
-By the end of this workshop, you will be able to:
-
-- Deploy a complete multi-agent system using Agntcy components
-- Understand how agents communicate using Agent-to-Agent (A2A) protocols
-- Explore the system architecture and observe agent interactions
-- **Complete the main challenge**: Integrate monsoon awareness into the Vietnam farm agent
 
 ---
 
@@ -52,21 +39,41 @@ node -v
 ### Setup Instructions
 
 1. **Environment Setup**
-
+   
+Create a virtual env:
 ```sh
-cd coffeeAGNTCY/coffee_agents/lungo
+uv venv
+source .venv/bin/activate
+```
+Copy the environment file:
+```sh
 cp .env.example .env
 ```
 
 2. **Configure LLM Provider**
-   Edit your `.env` file:
+   
+You can choose between OpenAI and Azure OpenAI. Edit your `.env` file:
 
-```env
-LLM_PROVIDER=openai
-OPENAI_API_KEY=your_openai_api_key_here
-OPENAI_MODEL_NAME=gpt-4o
-```
 
+ *OpenAI:*
+ 
+ ```env
+  LLM_PROVIDER=openai
+  OPENAI_API_KEY="your_openai_api_key_here"
+  OPENAI_ENDPOINT=https://api.openai.com/v1 # Default OpenAI endpoint without proxy
+  OPENAI_MODEL_NAME=gpt-4o
+ ```
+
+ *Azure OpenAI:*
+ 
+ ```env
+  LLM_PROVIDER=azure-openai
+  AZURE_OPENAI_ENDPOINT=https://your-azure-resource.openai.azure.com/
+  AZURE_OPENAI_DEPLOYMENT=gpt-4-prod
+  AZURE_OPENAI_API_KEY=your_azure_api_key
+  AZURE_OPENAI_API_VERSION=2023-12-01-preview
+ 
+ ```
 3. **Configure Observability (OTEL)**
 
 ```env
@@ -88,11 +95,13 @@ uv sync
 
 6. **Start Services** (Each in a separate terminal tab)
 
-> **Note:** Export the `PYTHONPATH` before running Python services:
-
-```sh
-export PYTHONPATH=$(pwd)
-```
+> **Note:** Export the `PYTHONPATH` **on each new terminal** before running Python services. Also, don't forget to **activate your virtual environment**.
+>
+>```sh
+>cd coffeeAGNTCY/coffee_agents/lungo
+>source .venv/bin/activate
+>export PYTHONPATH=$(pwd)
+>```
 
 * **Terminal 1 – SLIM Message Bus & Observability**
 
@@ -138,9 +147,11 @@ npm install
 npm run dev
 ```
 
+If during the exercise you need to update one of the services, just stop the process and rerun it! 
+
 ### Access the System
 
-* **Coffee Exchange UI**: [http://localhost:3000](http://localhost:3000)
+* **Coffee Exchange UI**: [http://localhost:3000](http://localhost:3000). (the specific port is displayed on the frontend UI terminal, in case this one does not work)
 * **Grafana Dashboard**: [http://localhost:3001](http://localhost:3001) (default admin/admin)
 
 ---
@@ -200,7 +211,7 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 
 ### Expected Behavior
 
-* Monsoon status is displayed:
+* Monsoon status is displayed by the MCP server:
   `"There are monsoon conditions."` or `"There are no monsoons."`
 * Adjusted yield if monsoon present (30% reduction)
 * Real weather data from the MCP server (not hardcoded)
@@ -279,7 +290,7 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 ## 💡 Hints & Tips
 
 * Use `async/await` for MCP calls
-* Use logging to debug monsoon responses
+* Use logging to debug monsoon responses (very handy!)
 * Ensure supervisor routes inventory queries through monsoon node
 * Keep LLM prompts concise to limit output to required info
 
@@ -298,7 +309,7 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 ## 🎉 Next Steps
 
 * Extend weather awareness to other farms
-* Adjust monsoon thresholds or include additional weather parameters
+* Include additional weather parameters
 * Use Grafana to monitor agent communication and performance
 * Experiment with prompts to observe system responses
 
