@@ -8,6 +8,9 @@ from langchain_core.prompts import PromptTemplate
 from langgraph.graph import StateGraph, END
 from common.llm import get_llm
 from ioa_observe.sdk.decorators import agent, graph
+from agntcy_app_sdk.factory import AgntcyFactory
+from config.config import DEFAULT_MESSAGE_TRANSPORT, TRANSPORT_SERVER_ENDPOINT
+
 
 logger = logging.getLogger("lungo.vietnam_farm_agent.agent")
 
@@ -17,6 +20,8 @@ class NodeStates:
     INVENTORY = "inventory_node"
     ORDERS = "orders_node"
     GENERAL_RESPONSE = "general_response_node"
+    MONSOON_CHECK = "monsoon_check_node"
+
 
 # --- 2. Define the Graph State ---
 class GraphState(MessagesState):
@@ -24,6 +29,7 @@ class GraphState(MessagesState):
     Represents the state of our graph, passed between nodes.
     """
     next_node: str
+    monsoon_status: str | None
 
 # --- 3. Implement the LangGraph Application Class ---
 @agent(name="vietnam_farm_agent")
@@ -69,7 +75,7 @@ class FarmAgent:
         logger.info(f"Supervisor intent determined: {intent}")  # Log the intent for debugging
 
         if "inventory" in intent:
-            return {"next_node": NodeStates.INVENTORY, "messages": state["messages"]}
+            return {"next_node": NodeStates.MONSOON_CHECK, "messages": state["messages"]}
         elif "orders" in intent:
             return {"next_node": NodeStates.ORDERS, "messages": state["messages"]}
         else:
@@ -163,6 +169,8 @@ class FarmAgent:
         workflow.add_node(NodeStates.ORDERS, self._orders_node)
         workflow.add_node(NodeStates.GENERAL_RESPONSE, self._general_response_node)
 
+
+
         # Set the entry point
         workflow.set_entry_point(NodeStates.SUPERVISOR)
 
@@ -211,3 +219,19 @@ class FarmAgent:
 
         # If no valid AIMessage found, return the last message as a fallback
         return messages[-1].content.strip() if messages else "No valid response generated."
+
+    async def _monsoon_check_node(self, state: GraphState) -> dict:
+        """
+        Calls the MCP server to check for monsoon conditions in Vietnam.
+        """
+        # Initialize AGNTCY factory
+        ## YOUR CODE HERE
+
+        # Create transport for MCP communication
+        ## YOUR CODE HERE
+
+        # Create MCP client connected to the weather server
+        ## YOUR CODE HERE
+
+        pass
+

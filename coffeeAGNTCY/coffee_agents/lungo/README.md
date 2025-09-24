@@ -1,312 +1,318 @@
-## Lungo Demo Overview
+Absolutely! I’ve cleaned up your Markdown, organized the titles hierarchically, fixed heading sizes, and integrated your monsoon workshop instructions seamlessly into the flow. Here’s the polished version:
 
-The **Lungo Demo** is a continuously evolving showcase of interoperable open-source agentic components. Its primary goal is to demonstrate how different components—from the **Agntcy** project and other open-source ecosystems—can work together seamlessly.
+# CoffeeAgntcy Workshop: Multi-Agent System Integration
 
-### Overview
+Welcome to the **CoffeeAgntcy Workshop**! This interactive exercise will guide you through deploying and exploring a multi-agent coffee trading system and challenge you to integrate weather awareness into the Vietnam farm agent.
 
-The current demo models a **supervisor-worker agent ecosystem**, where:
+---
 
-- The **Supervisor Agent** acts as a *Coffee Exchange*, responsible for managing inventory and fulfilling orders.
-- The **Worker Agents** represent *Coffee Farms*, which supply the inventory and provide order information.
+## 🎯 Workshop Objectives
 
-All agents are implemented as **directed LangGraphs** with **Agent-to-Agent (A2A)** integration. The user interface communicates with the Supervisor’s API to submit prompts. These prompts are processed through the LangGraph and routed via an A2A client to the appropriate Farm’s A2A server.
+By the end of this workshop, you will be able to:
 
-The underlying A2A transport is configurable. By default, it uses **SLIM**, supporting both broadcast and unicast messaging depending on the context and data requirements.
+- Deploy a complete multi-agent system using Agntcy components
+- Understand how agents communicate using Agent-to-Agent (A2A) protocols
+- Explore the system architecture and observe agent interactions
+- **Complete the main challenge**: Integrate monsoon awareness into the Vietnam farm agent
 
-One notable component is the **Colombia Farm**, which functions as an **MCP client**. It communicates with an MCP server (over SLIM) to retrieve real-time weather data used to calculate coffee yield.
+---
 
-## Running Lungo Locally
+## 🏗️ System Overview
 
-You can use Lungo in two ways:
+The CoffeeAgntcy system models a **supervisor-worker agent ecosystem**:
 
-1. **Local Python**  
-   Run each component directly on your machine.
+- **Coffee Exchange (Supervisor)**: Manages inventory and fulfills orders
+- **Coffee Farms (Workers)**: Supply inventory and process orders
+  - Brazil Farm: Basic coffee production
+  - Colombia Farm: Uses weather data for yield calculations
+  - Vietnam Farm: **Your integration target** – needs monsoon awareness
+- **Weather MCP Server**: Provides real-time weather data
+- **SLIM Message Bus**: Enables agent communication
+- **Observability Stack**: Grafana dashboard for monitoring
 
-2. **Docker Compose**  
-   Quickly spin up all components as containers using Docker Compose.
+---
+
+## 🚀 Part 1: Deploy the System
 
 ### Prerequisites
 
-Before you begin, ensure the following tools are installed:
+Ensure you have these tools installed:
 
-- **uv**: A Python package and environment manager.  
-  Install via Homebrew:
-  ```sh
-  brew install uv
-  ```
+- **uv** (Python package manager)
+```sh
+brew install uv
+````
 
-- **Node.js** version **16.14.0 or higher**  
-  Check your version:
-  ```sh
-  node -v
-  ```
-  If not installed, download it from the [official Node.js website](https://nodejs.org/).
+* **Node.js** (16.14.0+)
 
----
+```sh
+node -v
+```
 
 ### Setup Instructions
 
-1. **(Optional) Create a Virtual Environment**  
-   Initialize your virtual environment using `uv`:
-   ```sh
-   uv venv
-   source .venv/bin/activate
-   ```
+1. **Environment Setup**
 
-2. **Install Python Dependencies**  
-   Use `uv` to install all required dependencies:
-   ```sh
-   uv sync
-   ```
-   Navigate to the Lungo project directory, set the PYTHONPATH environment variable to the root directory of the lungo project. This is necessary for running the application locally.
-   ```sh
-   # In the lungo root directory
-   export PYTHONPATH=$(pwd)
-   ```
-
-3. **Configure Environment Variables**  
-   Copy the example environment file:
-   ```sh
-   cp .env.example .env
-   ```
-   
-   **Configure LLM Provider, Credentials and OTEL endpoint**
-
-   Then update `.env` with your LLM provider, credentials and OTEL endpoint. For example:
-
-   *OpenAI:*
-   
-   ```env
-    LLM_PROVIDER=openai
-    OPENAI_API_KEY="your_openai_api_key_here"
-    OPENAI_ENDPOINT=https://api.openai.com/v1 # Default OpenAI endpoint without proxy
-    OPENAI_MODEL_NAME=gpt-4o
-   ```
-
-   *Azure OpenAI:*
-   
-   ```env
-    LLM_PROVIDER=azure-openai
-    AZURE_OPENAI_ENDPOINT=https://your-azure-resource.openai.azure.com/
-    AZURE_OPENAI_DEPLOYMENT=gpt-4-prod
-    AZURE_OPENAI_API_KEY=your_azure_api_key
-    AZURE_OPENAI_API_VERSION=2023-12-01-preview
-   ```
-   
-   *OTEL:*
-   
-   ```env
-   OTLP_HTTP_ENDPOINT="http://localhost:4318"
-   ```
-   
-  **Optional: Configure Transport Layer**
-
-   You can also set the transport protocol and server endpoint by adding the following optional variables:
-
-   ```env
-   DEFAULT_MESSAGE_TRANSPORT=slim
-   TRANSPORT_SERVER_ENDPOINT=http://localhost:46357
-   ```
-
-   - `DEFAULT_MESSAGE_TRANSPORT`: Defines the message transport protocol used for agent communication.
-   - `TRANSPORT_SERVER_ENDPOINT`: The gateway or server endpoint for the specified transport.
-
-   For a list of supported protocols and implementation details, see the [Agntcy App SDK README](https://github.com/agntcy/app-sdk). This SDK provides the underlying interfaces for building communication bridges and agent clients.
-
-**Enable Observability with Observe SDK**
-
-Make sure the following Python dependency is installed:
-```
-ioa-observe-sdk==1.0.12
+```sh
+cd coffeeAGNTCY/coffee_agents/lungo
+cp .env.example .env
 ```
 
-For advanced observability of your multi-agent system, integrate the [Observe SDK](https://github.com/agntcy/observe/blob/main/GETTING-STARTED.md).
+2. **Configure LLM Provider**
+   Edit your `.env` file:
 
-- Use the following decorators to instrument your code:
-  - `@graph(name="graph_name")`: Captures MAS topology state for observability.
-  - `@agent(name="agent_name", description="Some description")`: Tracks individual agent nodes and activities.
-  - `@tool(name="tool_name", description="Some description")`: Monitors tool usage and performance.
+```env
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL_NAME=gpt-4o
+```
 
-- **To enable tracing for the Lungo multi-agent system:**
-  - In code, set the factory with tracing enabled:
-    ```python
-    AgntcyFactory("lungo.exchange", enable_tracing=True)
-    ```
+3. **Configure Observability (OTEL)**
 
-- **To start a new trace session for each prompt execution:**  
-  Call `session_start()` at the beginning of each prompt execution to ensure each prompt trace is tracked as a new session:
-  ```python
-  from ioa_observe_sdk import session_start
+```env
+OTLP_HTTP_ENDPOINT=http://localhost:4318
+```
 
-  # At the start of each prompt execution
-  session_start()
-  ```
+4. **Configure SLIM Message Bus**
 
----
+```env
+DEFAULT_MESSAGE_TRANSPORT=SLIM
+TRANSPORT_SERVER_ENDPOINT=http://localhost:46357
+```
 
-### Execution
+5. **Install Dependencies**
 
->  **Note:** Each service should be started in its **own terminal window** and left running while the app is in use.
->
-> **Shortcut:** If you prefer to spin up all services at once without reading through the steps below, you canspin
-> up the entire stack via Docker Compose:
->
->```sh
->docker compose up
->```
->
->Once running, access the UI at: [http://localhost:3000/](http://localhost:3000/), access grafana dashboard at: [http://localhost:3001/](http://localhost:3001/)
->
->
-> However, it is recommended to go through the steps below to better understand each component's role.
+```sh
+uv sync
+```
 
+6. **Start Services** (Each in a separate terminal tab)
 
-**Step 1: Run the SLIM Message Bus Gateway and Observability stack**
+> **Note:** Export the `PYTHONPATH` before running Python services:
 
-To enable A2A communication over SLIM, you need to run the SLIM message bus gateway. 
+```sh
+export PYTHONPATH=$(pwd)
+```
 
-Additionally run the observability stack that has OTEL Collector, Grafana and ClickHouse DB.
-
-You can do this by executing the following command:
+* **Terminal 1 – SLIM Message Bus & Observability**
 
 ```sh
 docker-compose up slim nats clickhouse-server otel-collector grafana
 ```
 
-**Step 2: Run the Weather MCP Server**
-
-Start the MCP server, which uses the Nominatim API to convert location names into latitude and longitude coordinates, and then fetches weather data from the Open-Meteo API using those coordinates:
-
-*Local Python Run:*
+* **Terminal 2 – Weather MCP Server**
 
 ```sh
 uv run python agents/mcp_servers/weather_service.py
 ```
 
-*Docker Compose:*
-
-```sh
-docker-compose up weather-mcp-server --build
-```
-
-This MCP server is required for the Colombia Farm to function correctly.
-
-**Step 3: Run the Farms**
-
-Start all the farm servers, that act as A2A servers, by executing:
-
-*Local Python Run:*
->
->  **Note:** Each farm should be started in its **own terminal window**
->
+* **Terminal 3 – Brazil Farm**
 
 ```sh
 uv run python agents/farms/brazil/farm_server.py
+```
+
+* **Terminal 4 – Colombia Farm**
+
+```sh
 uv run python agents/farms/colombia/farm_server.py
+```
+
+* **Terminal 5 – Vietnam Farm**
+
+```sh
 uv run python agents/farms/vietnam/farm_server.py
 ```
 
-*Docker Compose:*
-
-```sh
-docker-compose up brazil-farm-server colombia-farm-server vietnam-farm-server --build
-```
-
-The farm servers handle incoming requests from the exchange and process them using a directed LangGraph containing two directed paths: one for fetching inventory and another for generating orders, depending on the prompt.
-
-**Step 4: Run the Exchange**
-
-Start the exchange, which acts as an A2A client, by running:
-
-*Local Python Run:*
+* **Terminal 6 – Coffee Exchange**
 
 ```sh
 uv run python agents/supervisors/auction/main.py
 ```
 
-*Docker Compose:*
+* **Terminal 7 – Frontend UI**
 
 ```sh
-docker-compose up exchange-server --build
-```
-
-This command starts a FastAPI server that processes user prompts by passing them to a LangGraph-based supervisor, which manages delegation to worker agents. The supervisor is implemented as a directed LangGraph with nodes for Inventory, Orders, General Information, and Reflection.
-
-Requests that are not related to inventory or order creation are automatically routed to the General Information node, which returns a default response. Inventory requests without a specified farm are broadcast across all farms to collect inventory data. If a specific farm is provided, the request is sent directly to that farm. Order requests are sent one-to-one to a specified farm and must include the farm location and acceptable price.
-
-To invoke the exchange, use the /agent/prompt endpoint to send a human-readable prompt to ask information about coffee inventory or to place an order. For example:
-
-```bash
-curl -X POST http://127.0.0.1:8000/agent/prompt \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "How much coffee does the Colombia farm have?"
-  }'
-```
-
-*Example prompts:*
-
-| Intent        | Prompt                                                   |
-|---------------|-----------------------------------------------------------|
-| Check inventory for a specific farm | How much coffee does the Colombia farm have? |          
-| Check inventory across farms     | Show me the total inventory across all farms. |            
-| Order Request   | I need 50 lb of coffee beans from Colombia for 0.50 cents per lb  |   
-
-**Step 5: Access the UI**
-
-Once all services are running, you can access the React UI by starting the frontend development server (from the `exchange/frontend` directory):
-
-*Local Run:*
-
-```sh
+cd frontend
 npm install
 npm run dev
 ```
 
-*Docker Compose:*
+### Access the System
 
-```sh
-docker-compose up ui --build
-```
+* **Coffee Exchange UI**: [http://localhost:3000](http://localhost:3000)
+* **Grafana Dashboard**: [http://localhost:3001](http://localhost:3001) (default admin/admin)
 
-By default, the UI will be available at [http://localhost:3000/](http://localhost:3000/).
+---
 
-![Screenshot](images/lungo_ui.png)
+## 🔍 Part 2: Explore the System
 
-**Step 6: Visualize OTEL Traces in Grafana**
+### Test Current Functionality
 
-1. **Access Grafana**  
-   Open your browser and go to [http://localhost:3001/](http://localhost:3001/).  
-   Log in with the default admin credentials (username: `admin`, password: `admin` unless you changed it).
+Try these prompts in the UI:
 
-   ![Screenshot: Grafana Login](images/grafana_login.png)
+| Intent          | Prompt                                                         |
+| --------------- | -------------------------------------------------------------- |
+| Check inventory | "How much coffee does the Colombia farm have?"                 |
+| Check all farms | "Show me the total inventory across all farms"                 |
+| Place an order  | "I need 50 lb of coffee beans from Colombia for \$0.50 per lb" |
+| Vietnam farm    | "What's the current inventory at the Vietnam farm?"            |
 
-2. **Connect/Add the ClickHouse Datasource**  
-   - In the left sidebar, click on **"Connections" > "Data sources"**.
-   - If not already present, add a new **ClickHouse** datasource with the following settings:
-     - **Server address:** `clickhouse-server`
-     - **Port:** `9000`
-     - **Protocol:** `native`
-     - **User/Password:** `admin` / `admin`
-   - If already present, select the **ClickHouse** datasource (pre-configured in the Docker Compose setup).
+### Visualize OTEL Traces in Grafana
 
-   ![Screenshot: ClickHouse Datasource](images/grafana_clickhouse_datasource.png)
-   ![Screenshot: ClickHouse Connection](images/grafana_clickhouse_connection.png) 
+1. Open Grafana: [http://localhost:3001](http://localhost:3001)
+   Default credentials: `admin` / `admin`
+
+2. Connect/Add ClickHouse datasource if needed:
+
+   * **Server address:** `clickhouse-server`
+   * **Port:** `9000`
+   * **Protocol:** `native`
+   * **User/Password:** `admin` / `admin`
+
+3. Import the OTEL traces dashboard:
+   Use [`lungo_dashboard.json`](lungo_dashboard.json) and select `grafana-clickhouse-datasource`.
+
+4. Explore traces generated by agent interactions, including future monsoon-aware Vietnam farm requests.
+
+---
+
+## 🎯 Part 3: Challenge – Vietnam Farm Monsoon Integration
+
+### Current Issue
+
+The Vietnam farm currently does not query weather data. During monsoon season, yield reports are inaccurate, causing unfulfilled orders at the Coffee Exchange.
+
+### Goals
+
+1. **Enhance the Weather MCP Server**
+   Implement monsoon detection in `agents/mcp_servers/weather_service.py`. The server should provide:
+
+   * `monsoon_status`: True / False
+   * Real-time weather metrics (e.g., wind speed, rainfall)
+
+2. **Update the Vietnam Farm Agent**
+   Modify `agents/farms/vietnam/agent.py` to:
+
+   * Query the Weather MCP server for monsoon status before sending inventory data.
+   * Reduce coffee yield by **30%** if a monsoon is detected.
+   * Include monsoon status in inventory reports.
+
+### Expected Behavior
+
+* Monsoon status is displayed:
+  `"There are monsoon conditions."` or `"There are no monsoons."`
+* Adjusted yield if monsoon present (30% reduction)
+* Real weather data from the MCP server (not hardcoded)
+* Grafana shows traces of MCP calls
+
+---
+
+## 🛠️ Step-by-Step Implementation Guide
+
+### 1️⃣ Add Monsoon Detection to the Weather MCP Server
+
+**File:** `agents/mcp_servers/weather_service.py`
+
+- **Implement the following function:**
+
+  ```python
+  async def get_monsoon_status(location: str):
+      # 1. Retrieve weather forecast (see get_forecast for example)
+      # 2. If wind speed > 8 m/s, consider it monsoon season
+      # 3. Return a descriptive message with wind speed
+      # 4. Handle errors gracefully
+  ```
+
+---
+
+### 2️⃣ Integrate MCP Client in the Vietnam Farm Agent
+
+**File:** `agents/farms/vietnam/agent.py`
+
+- **Implement the monsoon check node:**
+
+  ```python
+  async def _monsoon_check_node(self, state: GraphState) -> dict:
+      # 1. Initialize AGNTCY factory
+      # 2. Create transport for MCP communication
+      # 3. Create MCP client connected to the weather server
+      # 4. Call get_monsoon_status asynchronously
+      # 5. Extract concise status line:
+      #    "There are monsoon conditions." or "There are no monsoon conditions."
+      # 6. Return updated state with monsoon_status
+  ```
+
+- **Update the agent workflow:**
+  - Ensure the supervisor node routes inventory queries through the monsoon check node.
+  - In `_build_graph`, add the new node and edges as needed.
+
+- **Update the inventory node:**
+  - Modify `_inventory_node` to use `monsoon_status` from the state.
+  - Adjust yield estimates: **reduce by 30% if monsoon detected**.
+  - Include the monsoon status line in the AI prompt.
+
+---
+
+> **Note:**  
+> The UI does not update automatically. To see your changes reflected, run the following from the `frontend` folder:
+> ```sh
+> cp frontend/src/utils/graphConfigs_workshop.tsx frontend/src/utils/graphConfigs.tsx
+> ```
+
+---
+
+### 3️⃣ Test Your Implementation
+
+- **Try these example messages:**
+  - `"How much coffee do we have in stock?"`
+  - `"What’s the status of order 12345?"`
+
+- **Verify:**
+  - `_monsoon_check_node` queries the MCP server
+  - Inventory responses include monsoon status
+  - Yield is adjusted correctly for monsoon
+  - Order queries still function as before
+
+---
+
+## 💡 Hints & Tips
+
+* Use `async/await` for MCP calls
+* Use logging to debug monsoon responses
+* Ensure supervisor routes inventory queries through monsoon node
+* Keep LLM prompts concise to limit output to required info
+
+---
+
+## 🏆 Success Criteria
+
+* ✅ Vietnam farm reports actual monsoon status
+* ✅ Coffee yield adjusted based on weather
+* ✅ Weather data retrieved from MCP server
+* ✅ Grafana traces show Vietnam farm MCP interactions
+* ✅ Existing functionality remains intact
+
+---
+
+## 🎉 Next Steps
+
+* Extend weather awareness to other farms
+* Adjust monsoon thresholds or include additional weather parameters
+* Use Grafana to monitor agent communication and performance
+* Experiment with prompts to observe system responses
+
+---
+
+## 📚 Resources
+
+There is a lot more that AGNTCY can do, don't hesitate to have a look at the [original AGNTCY repo](https://github.com/agntcy/coffeeAgntcy)
 
 
-3. **Import the OTEL Traces Dashboard**  
-   - In the left sidebar, click on **"Dashboards" > "New" > "Import"**.
-   - Upload or paste the JSON definition for the OTEL traces dashboard, located here:  
-     [`lungo_dashboard.json`](lungo_dashboard.json)
-   - **When prompted, select `grafana-clickhouse-datasource` as the datasource.**
-   - Click **"Import"** to add the dashboard.
+---
 
-   ![Screenshot: Import Dashboard](images/grafana_import_dashboard.png)
 
-4. **View Traces for the Lungo Multi-Agent System**  
-   - Navigate to the imported dashboard.
-   - You should see traces and spans generated by the Lungo agents as they process requests.
-   - **To view details of a specific trace, click on a TraceID in the dashboard. This will open the full trace and its spans for further inspection.**
+**Happy coding!** 🚀☕
 
-   ![Screenshot: OTEL Dashboard](images/dashboard_grafana.png)
-   ![Screenshot: OTEL Traces](images/dashboard_traces.png)
+Focus not just on making it work, but understanding how multi-agent systems integrate external services and communicate effectively.
+

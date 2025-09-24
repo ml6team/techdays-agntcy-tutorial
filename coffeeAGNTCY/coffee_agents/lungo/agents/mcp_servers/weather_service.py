@@ -83,6 +83,17 @@ async def get_forecast(location: str) -> str:
         f"Wind direction: {cw['winddirection']}°"
     )
 
+@mcp.tool()
+async def get_monsoon_status(location: str) -> str:
+    """Check wind speed to detect monsoon conditions using Open-Meteo."""
+    # 1. Retrieve weather forecast (see get_forecast for example)
+    # 2. If wind speed > 8 m/s, consider it monsoon season
+    # 3. Return a descriptive message with wind speed
+    # 4. Handle errors gracefully
+
+    pass
+
+
 async def main():
     # serve the MCP server via a message bridge
     transport = factory.create_transport(DEFAULT_MESSAGE_TRANSPORT, endpoint=TRANSPORT_SERVER_ENDPOINT, name="default/default/lungo_weather_service")
@@ -92,3 +103,4 @@ async def main():
 if __name__ == "__main__":
     logging.info("Starting weather service...")
     asyncio.run(main())
+
