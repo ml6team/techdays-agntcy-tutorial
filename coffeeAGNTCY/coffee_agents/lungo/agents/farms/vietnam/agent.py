@@ -266,19 +266,24 @@ class FarmAgent:
                 else:
                     content_list = getattr(result, "content", [])
                     if isinstance(content_list, list) and len(content_list) > 0:
-                        monsoon_message = content_list
-0                # Derive concise status line for downstream prompt
-wind_speed} m/s")
-                else:
-                    logger.info("Wind speed not found in MCP response.")
-
-# Derive concise status line for downstream prompt                status_line: str | None = None
+                        monsoon_message = content_list[0].text if hasattr(content_list[0], 'text') else str(content_list[0])
+                    else:
+                        monsoon_message = "No content returned from tool."
+                
+                logger.info(f"Monsoon check result: {monsoon_message}")
+                
+                # Derive concise status line for downstream prompt
+                status_line: str | None = None
                 lower = (monsoon_message or "").lower()
                 if ("monsoon" in lower) and ("detected" in lower or "🌧️" in lower):
                     status_line = "There are monsoon conditions."
+                else:
+                    status_line = "There are no monsoon conditions."
 
                 return {"messages": [AIMessage(monsoon_message)], "monsoon_status": status_line}
 
         except Exception as e:
             logger.error(f"MCP monsoon check error: {e}")
-            return {"messages": [AIMessage(f"Error retrieving monsoon data: {str(e)}")]}
+            # Return graceful error message like Colombia does
+            error_message = f"Error retrieving monsoon data: {str(e)}"
+            return {"messages": [AIMessage(error_message)], "monsoon_status": "There are no monsoon conditions."}

@@ -55,6 +55,7 @@ async def geocode_location(location: str) -> tuple[float, float] | None:
     if data and len(data) > 0:
         lat = float(data[0]["lat"])
         lon = float(data[0]["lon"])
+        logger.info(f"Got coordinates from Nominatim for {location}: ({lat}, {lon})")
         return lat, lon
     return None
 
