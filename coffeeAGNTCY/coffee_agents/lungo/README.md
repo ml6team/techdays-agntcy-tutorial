@@ -1,6 +1,12 @@
-# CoffeeAgntcy Workshop: Multi-Agent System Integration
+# TechDays 2025 AGNTCY Workshop: Multi-Agent System Integration
 
-Welcome to the **CoffeeAgntcy Workshop**! This interactive exercise will guide you through deploying and exploring a multi-agent coffee trading system and challenge you to integrate weather awareness into the Vietnam farm agent.
+Welcome to the **CoffeeAGNTCY Workshop**! In this hands-on exercise, you'll deploy and explore a multi-agent coffee trading system for CoffeeAGNTCY, a global coffee company. Your main goal is to 
+integrate weather awareness into one of the farm agents.
+
+The first thing you need to do is clone the CoffeeAgntcy repo from [https://github.com/agntcy/coffeeAgntcy](https://github.com/agntcy/coffeeAgntcy). Feel free to check out their README and experiment. However, this tutorial contains all the setup instructions you need, so you can follow along without any worries.
+
+We're going to expand the *lungo* configuration with new features. Be sure to follow the steps in this tutorial, working inside the 
+`coffeeAGNTCY/coffee_agents/lungo` directory.
 
 ---
 
@@ -60,7 +66,7 @@ You can choose between OpenAI and Azure OpenAI. Edit your `.env` file:
  ```env
   LLM_PROVIDER=openai
   OPENAI_API_KEY="your_openai_api_key_here"
-  OPENAI_ENDPOINT=https://api.openai.com/v1 # Default OpenAI endpoint without proxy
+  OPENAI_ENDPOINT=https://api.openai.com/v1
   OPENAI_MODEL_NAME=gpt-4o
  ```
 
@@ -151,7 +157,7 @@ If during the exercise you need to update one of the services, just stop the pro
 
 ### Access the System
 
-* **Coffee Exchange UI**: [http://localhost:3000](http://localhost:3000). (the specific port is displayed on the frontend UI terminal, in case this one does not work)
+* **Coffee Exchange UI**: [http://localhost:3000](http://localhost:3000). (the specific port is displayed on the frontend UI terminal, in case this one doesn't work)
 * **Grafana Dashboard**: [http://localhost:3001](http://localhost:3001) (default admin/admin)
 
 ---
@@ -164,7 +170,7 @@ Try these prompts in the UI:
 
 | Intent          | Prompt                                                         |
 | --------------- | -------------------------------------------------------------- |
-| Check inventory | "How much coffee does the Colombia farm have?"                 |
+| Chec kinventory | "How much coffee does the Colombia farm have?"                 |
 | Check all farms | "Show me the total inventory across all farms"                 |
 | Place an order  | "I need 50 lb of coffee beans from Colombia for \$0.50 per lb" |
 | Vietnam farm    | "What's the current inventory at the Vietnam farm?"            |
@@ -197,12 +203,14 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 ### Goals
 
 1. **Enhance the Weather MCP Server**
+
    Implement monsoon detection in `agents/mcp_servers/weather_service.py`. The server should provide:
 
    * `monsoon_status`: True / False
    * Real-time weather metrics (e.g., wind speed, rainfall)
 
 2. **Update the Vietnam Farm Agent**
+
    Modify `agents/farms/vietnam/agent.py` to:
 
    * Query the Weather MCP server for monsoon status before sending inventory data.
@@ -220,6 +228,15 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 ---
 
 ## 🛠️ Step-by-Step Implementation Guide
+
+### 💡 Hints & Tips
+
+* Use `async/await` for MCP calls
+* Use logging to debug monsoon responses (very handy!)
+* Ensure supervisor routes inventory queries through monsoon node
+* Keep LLM prompts concise to limit output to required info
+
+---
 
 ### 1️⃣ Add Monsoon Detection to the Weather MCP Server
 
@@ -266,9 +283,9 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 ---
 
 > **Note:**  
-> The UI does not update automatically. To see your changes reflected, run the following from the `frontend` folder:
+> The UI does not update automatically. To "see" your changes reflected, we provide you with an updated ```graphConfigs.tsx``` file. Copy it onto the current graph configuration.
 > ```sh
-> cp frontend/src/utils/graphConfigs_workshop.tsx frontend/src/utils/graphConfigs.tsx
+> cp graphConfigs_workshop.tsx frontend/src/utils/graphConfigs.tsx
 > ```
 
 ---
@@ -276,7 +293,7 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 ### 3️⃣ Test Your Implementation
 
 - **Try these example messages:**
-  - `"How much coffee do we have in stock?"`
+  - `"How much coffee do we have in stock in Vietnam?"`
   - `"What’s the status of order 12345?"`
 
 - **Verify:**
@@ -284,15 +301,6 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
   - Inventory responses include monsoon status
   - Yield is adjusted correctly for monsoon
   - Order queries still function as before
-
----
-
-## 💡 Hints & Tips
-
-* Use `async/await` for MCP calls
-* Use logging to debug monsoon responses (very handy!)
-* Ensure supervisor routes inventory queries through monsoon node
-* Keep LLM prompts concise to limit output to required info
 
 ---
 
@@ -317,13 +325,12 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 
 ## 📚 Resources
 
-There is a lot more that AGNTCY can do, don't hesitate to have a look at the [original AGNTCY repo](https://github.com/agntcy/coffeeAgntcy)
+There is a lot more that AGNTCY can do, don't hesitate to have a look at the [original AGNTCY repo](https://github.com/agntcy/coffeeAgntcy) and their [documentation](https://docs.agntcy.org/) .
 
 
----
 
 
-**Happy coding!** 🚀☕
+# **Happy coding!** 🚀☕
 
 Focus not just on making it work, but understanding how multi-agent systems integrate external services and communicate effectively.
 
