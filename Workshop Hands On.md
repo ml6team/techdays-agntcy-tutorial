@@ -46,7 +46,7 @@ node -v
 
 1. **Environment Setup**
    
-Create a virtual env:
+Create a virtual environment:
 ```sh
 uv venv
 source .venv/bin/activate
@@ -170,7 +170,7 @@ Try these prompts in the UI:
 
 | Intent          | Prompt                                                         |
 | --------------- | -------------------------------------------------------------- |
-| Chec kinventory | "How much coffee does the Colombia farm have?"                 |
+| Check inventory | "How much coffee does the Colombia farm have?"                 |
 | Check all farms | "Show me the total inventory across all farms"                 |
 | Place an order  | "I need 50 lb of coffee beans from Colombia for \$0.50 per lb" |
 | Vietnam farm    | "What's the current inventory at the Vietnam farm?"            |
@@ -325,7 +325,7 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
 
 ## 📚 Resources
 
-There is a lot more that AGNTCY can do, don't hesitate to have a look at the [original AGNTCY repo](https://github.com/agntcy/coffeeAgntcy) and their [documentation](https://docs.agntcy.org/) .
+There is a lot more that AGNTCY can do. Don't hesitate to have a look at the [original AGNTCY repo](https://github.com/agntcy/coffeeAgntcy) and their [documentation](https://docs.agntcy.org/).
 
 
 
