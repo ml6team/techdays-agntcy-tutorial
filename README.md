@@ -1,12 +1,14 @@
 # TechDays 2025 AGNTCY Workshop: Multi-Agent System Integration
 
-## 🎯 Workshop Context
+## 🎯 Workshop Overview
 
-In this TechDays tutorial, you'll learn to use the **AGNTCY framework** - a powerful multi-agent system development platform. AGNTCY enables you to build sophisticated agent ecosystems where multiple AI agents collaborate to solve complex problems. Learn more about AGNTCY at [https://docs.agntcy.org/](https://docs.agntcy.org/).
+Welcome to the **CoffeeAGNTCY Workshop**! In this TechDays tutorial, you'll learn to use the **AGNTCY framework** - a powerful multi-agent system development platform that enables you to build sophisticated agent ecosystems where multiple AI agents collaborate to solve complex problems.
 
-**Workshop Goal**: You'll set up a multi-agent framework that answers questions about coffee supplies, manages inventory across multiple farms, and processes orders intelligently. The system demonstrates how agents can work together using **MCP (Model Context Protocol) servers** to access external data sources like weather information.
+**What You'll Build**: A multi-agent coffee trading system that answers questions about coffee supplies, manages inventory across multiple farms, and processes orders intelligently. The system demonstrates how agents work together using **MCP (Model Context Protocol) servers** to access external data sources like weather information.
 
-## 🎯 Learning Objectives
+Learn more about AGNTCY at [https://docs.agntcy.org/](https://docs.agntcy.org/).
+
+## 📋 Learning Objectives
 
 ### Main Objectives
 By the end of this workshop, you will:
@@ -20,11 +22,8 @@ If you have extra time:
 
 - **Deploy an MCP Client on Vietnam Farm**: Integrate weather awareness by adding an MCP client to the Vietnam farm agent (Part 3)
 
-Welcome to the **CoffeeAGNTCY Workshop**! In this hands-on exercise, you'll deploy and explore a multi-agent coffee trading system for CoffeeAGNTCY, a global coffee company. Your main goal is to integrate weather awareness into one of the farm agents.
 
-**Getting Started**: First, clone the CoffeeAgntcy repository from [https://github.com/agntcy/coffeeAgntcy](https://github.com/agntcy/coffeeAgntcy). Feel free to explore their README and experiment with the system. However, this tutorial contains all the setup instructions you need, so you can follow along step-by-step.
 
-⚠️ **Important**: We'll be expanding the *lungo* configuration with new features. Make sure to work inside the `coffeeAGNTCY/coffee_agents/lungo` directory throughout this tutorial.
 
 ---
 
@@ -42,6 +41,9 @@ The CoffeeAgntcy system models a **supervisor-worker agent ecosystem**:
 - **Observability Stack**: Grafana dashboard for monitoring
 
 ---
+**Getting Started**: First, clone the CoffeeAgntcy repository from [https://github.com/agntcy/coffeeAgntcy](https://github.com/agntcy/coffeeAgntcy). Feel free to explore their README and experiment with the system. However, this tutorial contains all the setup instructions you need, so you can follow along step-by-step.
+
+⚠️ **Important**: We'll be expanding the *lungo* configuration with new features. Make sure to work inside the `coffeeAGNTCY/coffee_agents/lungo` directory throughout this tutorial.
 
 ## 🚀 Part 1: Deploy the System
 
