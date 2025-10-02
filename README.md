@@ -13,32 +13,38 @@ Learn more about AGNTCY at [https://docs.agntcy.org/](https://docs.agntcy.org/).
 ### Main Objectives
 By the end of this workshop, you will:
 
-- **Get a Better Understanding of AGNTCY**: Learn how the AGNTCY framework works and its core concepts (Part 1)
-- **Successfully Deploy the System**: Set up and configure a complete multi-agent coffee trading system (Part 1)
-- **Visualize Traces**: Use Grafana to monitor and visualize agent communications and interactions (Part 2)
+- **Understand AGNTCY Framework**: Learn core concepts and architecture (Part 1)
+- **Deploy Multi-Agent System**: Set up and configure the coffee trading system (Part 1)
+- **Monitor Agent Interactions**: Use Grafana to visualize agent communications (Part 2)
+- **Experience Group Conversations**: See multi-agent collaboration in logistics workflow (Part 3)
 
 ### Optional Objectives
 If you have extra time:
 
-- **Deploy an MCP Client on Vietnam Farm**: Integrate weather awareness by adding an MCP client to the Vietnam farm agent (Part 3)
-
-
-
+- **Integrate Weather Awareness**: Add MCP client to Vietnam farm for monsoon detection (Part 4)
 
 ---
 
-## 🏗️ System Overview
+## 🏗️ System Architecture
 
 The CoffeeAgntcy system models a **supervisor-worker agent ecosystem**:
 
+### Core Components
 - **Coffee Exchange (Supervisor)**: Manages inventory and fulfills orders
 - **Coffee Farms (Workers)**: Supply inventory and process orders
   - Brazil Farm: Basic coffee production
   - Colombia Farm: Uses weather data for yield calculations
-  - Vietnam Farm: **Your integration target** – needs monsoon awareness
+  - Vietnam Farm: **Possible Integration target** – needs monsoon awareness
 - **Weather MCP Server**: Provides real-time weather data
 - **SLIM Message Bus**: Enables agent communication
 - **Observability Stack**: Grafana dashboard for monitoring
+
+### Technology Stack
+- **AGNTCY Framework**: Multi-agent orchestration
+- **MCP (Model Context Protocol)**: External service integration
+- **SLIM Transport**: Agent-to-agent communication
+- **OpenTelemetry**: Distributed tracing
+- **Grafana + ClickHouse**: Observability and monitoring
 
 ---
 **Getting Started**: First, clone the CoffeeAgntcy repository from [https://github.com/agntcy/coffeeAgntcy](https://github.com/agntcy/coffeeAgntcy). Feel free to explore their README and experiment with the system. However, this tutorial contains all the setup instructions you need, so you can follow along step-by-step.
@@ -110,15 +116,13 @@ node -v
    ```
 
 5. **Install Dependencies**
-   
-   Run the following command to install the dependencies:
    ```sh
    uv sync
    ```
 
-6. **Launch Docker Desktop**
-   
-   Make sure your local Docker daemon is running.
+### Running the System
+
+⚠️ **Important**: You'll need **7 terminal tabs** to run the complete system. For each new terminal, run these setup commands:
 
 ### Running the Services
 
@@ -188,12 +192,11 @@ If you need to update one of the services during the exercise, simply stop the p
 
 Try these prompts in the UI:
 
-| Intent          | Prompt                                                         |
-| --------------- | -------------------------------------------------------------- |
-| Check inventory | "How much coffee does the Colombia farm have?"                 |
-| Check all farms | "Show me the total inventory across all farms"                 |
-| Place an order  | "I need 50 lb of coffee beans from Colombia for \$0.50 per lb" |
-| Vietnam farm    | "What's the current inventory at the Vietnam farm?"            |
+| Intent | Prompt | Expected Behavior |
+|--------|--------|-------------------|
+| **Check Inventory** | "How much coffee does the Colombia farm have?" | Shows current inventory with weather-adjusted yield |
+| **View All Farms** | "Show me the total inventory across all farms" | Displays inventory from all three farms |
+| **Vietnam Status** | "What's the current inventory at the Vietnam farm?" | Shows basic inventory (no weather integration yet) |
 
 ### Visualize OTEL Traces in Grafana
 
@@ -226,82 +229,123 @@ Try these prompts in the UI:
 
 ---
 
-## 🎯 Part 3: Challenge – Vietnam Farm Monsoon Integration
+## 🚚 Part 3: Group Conversation - Logistics System
 
-> **Note**: This is an optional challenge! Don't worry if you don't have much time to complete it or if you can't finish it at all. The core learning objectives are achieved by understanding the system architecture and MCP server concepts from Parts 1 and 2.
+### Overview
 
-### Current Issue
+This section demonstrates a **logistics multi-agent conversation** where specialized agents collaborate to process coffee orders from start to finish. The system showcases how different agents handle specific aspects of the order lifecycle using the SLIM message bus for group communication.
 
-The Vietnam farm currently does not query weather data. During monsoon season, yield reports are inaccurate, causing unfulfilled orders at the Coffee Exchange.
+### Logistics Architecture
 
-### Goals
+The logistics system consists of four specialized agents:
 
-1. **Enhance the Weather MCP Server**
+| Agent | Role | Responsibilities |
+|-------|------|------------------|
+| **Logistic Supervisor** | Orchestrator | Starts workflow, handles user input, creates orders |
+| **Tatooine Farm Agent** | Order Processor | Receives orders, prepares for shipping |
+| **Shipper Agent** | Transportation | Handles customs clearance, final delivery |
+| **Accountant Agent** | Payment Processor | Confirms payment completion |
 
-   Implement monsoon detection in `agents/mcp_servers/weather_service.py`. The server should provide:
-   - `monsoon_status`: True / False
-   - Real-time weather metrics (e.g., wind speed, rainfall)
+### Order Lifecycle
 
-2. **Update the Vietnam Farm Agent**
+```
+User Order → [Supervisor] → RECEIVED_ORDER → [Farm]
+[Farm] → HANDOVER_TO_SHIPPER → [Shipper] → CUSTOMS_CLEARANCE
+[CUSTOMS_CLEARANCE] → [Accountant] → PAYMENT_COMPLETE → [Shipper] → DELIVERED
+```
 
-   Modify `agents/farms/vietnam/agent.py` to:
-   - Query the Weather MCP server for monsoon status before sending inventory data
-   - Reduce coffee yield by **30%** if a monsoon is detected
+
+
+### Running the Logistics System
+
+
+1. **Start Infrastructure** (if not already running):
+   ```sh
+   docker-compose up slim clickhouse-server otel-collector grafana
+   ```
+
+2. **Start Logistics Agents**:
+   ```sh
+   docker-compose up logistic-farm logistic-supervisor logistic-shipper logistic-accountant
+   ```
+
+
+### Testing the Logistics System
+
+**Using the UI:**
+Navigate to the Coffee Exchange UI and try prompts like:
+- "I want to order 5000 lbs of coffee for $3.52 from the Tatooine farm"
+- "Process an order for 1000 lbs of coffee"
+
+
+### Logistics Observability
+
+Monitor the logistics workflow in Grafana:
+1. Open [http://localhost:3001](http://localhost:3001)
+2. Import the **Group Conversation Dashboard** (`group_conversation_dashboard.json`)
+3. Observe agent interactions and state transitions in real-time
+
+---
+
+## 🎯 Part 4: Challenge - Vietnam Farm Monsoon Integration
+
+> **Note**: This is an optional challenge! The core learning objectives are achieved by understanding the system architecture and MCP server concepts from Parts 1-3.
+
+### Problem Statement
+
+The Vietnam farm currently doesn't query weather data. During monsoon season, yield reports are inaccurate, causing unfulfilled orders at the Coffee Exchange.
+
+### Challenge Goals
+
+1. **Enhance Weather MCP Server**
+   - Implement monsoon detection in `agents/mcp_servers/weather_service.py`
+   - Provide `monsoon_status` (True/False)
+   - Include real-time weather metrics (wind speed, rainfall)
+
+2. **Update Vietnam Farm Agent**
+   - Modify `agents/farms/vietnam/agent.py` to query weather data
+   - Reduce coffee yield by **30%** if monsoon detected
    - Include monsoon status in inventory reports
 
 ### Expected Behavior
 
-- Monsoon status is displayed by the MCP server:
-  `"There are monsoon conditions."` or `"There are no monsoons."`
-- Adjusted yield if monsoon present (30% reduction)
-- Real weather data from the MCP server (not hardcoded)
-- Grafana shows traces of MCP calls
+- Monsoon status displayed: "There are monsoon conditions." or "There are no monsoon conditions."
+- Yield adjusted by 30% during monsoon season
+- Real weather data from MCP server (not hardcoded)
+- Grafana traces showing MCP calls
 
----
+### Implementation Guide
 
-## 🛠️ Step-by-Step Implementation Guide
-
-### 💡 Hints & Tips
-
-- Use `async/await` for MCP calls
-- Use logging to debug monsoon responses (very handy!)
-- Ensure supervisor routes inventory queries through monsoon node
-- Keep LLM prompts concise to limit output to required info
-
----
-
-### 1️⃣ Add Monsoon Detection to the Weather MCP Server
+#### Step 1: Weather MCP Server Enhancement
 
 **File:** `agents/mcp_servers/weather_service.py`
 
 - **Implement the following function:**
 
-  ```python
-  async def get_monsoon_status(location: str):
-      # 1. Retrieve weather forecast (see get_forecast for example)
-      # 2. If wind speed > 8 m/s, consider it monsoon season
-      # 3. Return a descriptive message with wind speed
-      # 4. Handle errors gracefully
-  ```
+```python
+async def get_monsoon_status(location: str):
+    # 1. Retrieve weather forecast (see get_forecast for example)
+    # 2. If wind speed > 8 m/s, consider it monsoon season
+    # 3. Return a descriptive message with wind speed
+    # 4. Handle errors gracefully
+```
 
----
-
-### 2️⃣ Integrate MCP Client in the Vietnam Farm Agent
+#### Step 2: Vietnam Farm Agent Integration
 
 **File:** `agents/farms/vietnam/agent.py`
 
 - **Implement the monsoon check node:**
 
-  ```python
-  async def _monsoon_check_node(self, state: GraphState) -> dict:
-      # 1. Initialize AGNTCY factory
-      # 2. Create transport for MCP communication
-      # 3. Create MCP client connected to the weather server
-      # 4. Call get_monsoon_status asynchronously
-      # 5. Extract concise status line:
-      #    "There are monsoon conditions." or "There are no monsoon conditions."
-      # 6. Return updated state with monsoon_status
-  ```
+```python
+async def _monsoon_check_node(self, state: GraphState) -> dict:
+    # 1. Initialize AGNTCY factory
+    # 2. Create transport for MCP communication
+    # 3. Create MCP client connected to the weather server
+    # 4. Call get_monsoon_status asynchronously
+    # 5. Extract concise status line:
+    #    "There are monsoon conditions." or "There are no monsoon conditions."
+    # 6. Return updated state with monsoon_status
+```
 
 - **Update the agent workflow:**
   - Ensure the supervisor node routes inventory queries through the monsoon check node
@@ -312,57 +356,38 @@ The Vietnam farm currently does not query weather data. During monsoon season, y
   - Adjust yield estimates: **reduce by 30% if monsoon detected**
   - Include the monsoon status line in the AI prompt
 
----
+#### Step 3: UI Configuration Update
 
-> **Note:**  
-> The UI does not update automatically. To "see" your changes reflected, we provide you with an updated ```graphConfigs.tsx``` file. Copy it onto the current graph configuration.
-> ```sh
-> cp graphConfigs_workshop.tsx frontend/src/utils/graphConfigs.tsx
-> ```
+Update the frontend graph configuration:
+```sh
+cp graphConfigs_workshop.tsx frontend/src/utils/graphConfigs.tsx
+```
 
----
+#### Step 4: Testing
 
-### 3️⃣ Test Your Implementation
+**Testing Checklist**
 
-**Testing Your Monsoon Integration:**
+- Try basic queries:
+  - "How much coffee do we have in stock in Vietnam?"
+  - "What's the status of order 12345?"
+- Try monsoon-related queries:
+  - "What's the current inventory at the Vietnam farm?"
+  - "Show me Vietnam farm's coffee inventory"
 
-1. **Test Basic Functionality** (should work before and after your changes):
-   - `"How much coffee do we have in stock in Vietnam?"`
-   - `"What's the status of order 12345?"`
+**What to Look For:**
 
-2. **Test Monsoon Detection** (new functionality):
-   - `"What's the current inventory at the Vietnam farm?"`
-   - `"Show me Vietnam farm's coffee inventory"`
+- ✅ The response includes a monsoon status line.
+- ✅ Coffee yield is reduced by 30% if monsoon conditions are detected.
+- ✅ Inventory amounts reflect current weather conditions.
+- ✅ MCP (weather) calls from the Vietnam farm appear in Grafana traces.
+- ❌ If you don't see a monsoon status, or inventory doesn't change with weather, or there are errors in the Vietnam farm terminal, or no MCP traces in Grafana, something is wrong.
 
-**What You Should See if It's Working:**
-- ✅ **Success Indicators:**
-  - The response includes a monsoon status line: "There are monsoon conditions." or "There are no monsoon conditions."
-  - If monsoon is detected, the coffee yield is reduced by 30%
-  - The inventory amount reflects the weather-adjusted yield
-  - Example response: "Vietnam farm has 70 lb of coffee beans available. There are monsoon conditions. (Yield reduced by 30% due to weather)"
+**Summary of Success Criteria**
 
-**What You Should See if It's NOT Working:**
-- ❌ **Failure Indicators:**
-  - No monsoon status mentioned in the response
-  - Same inventory amount regardless of weather conditions
-  - Error messages in the terminal where the Vietnam farm is running
-  - No traces in Grafana showing MCP server calls
-
-**Debugging Tips:**
-- Check the terminal running the Vietnam farm for error messages
-- Look at Grafana traces to see if MCP calls are being made
-- Verify the weather MCP server is running and responding
-- Check that your `_monsoon_check_node` is being called in the workflow
-
----
-
-## 🏆 Success Criteria
-
-- ✅ Vietnam farm reports actual monsoon status
-- ✅ Coffee yield adjusted based on weather
-- ✅ Weather data retrieved from MCP server
-- ✅ Grafana traces show Vietnam farm MCP interactions
-- ✅ Existing functionality remains intact
+- Vietnam farm accurately reports monsoon status and weather-adjusted yield.
+- MCP server provides weather data to the farm agent.
+- Grafana shows traces of MCP interactions.
+- All other system functionality continues to work as before.
 
 ---
 
